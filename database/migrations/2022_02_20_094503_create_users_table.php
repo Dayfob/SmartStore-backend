@@ -44,12 +44,12 @@ class CreateUsersTable extends Migration
             $table->char('name', 255);
             $table->char('slug', 255);
             $table->char('image_url', 512);
+            $table->text('description');
             $table->smallInteger('brand_id')->unsigned();
             $table->smallInteger('category_id')->unsigned();
             $table->smallInteger('subcategory_id')->unsigned();
             $table->integer('amount_left')->default(0);
             $table->integer('price');
-            $table->text('description');
             $table->json('attributes');
             $table->timestamps();
         });
@@ -57,14 +57,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->char('name', 255);
             $table->char('slug', 255);
-            $table->char('description', 512);
-            $table->smallInteger('brand_id')->unsigned();
-            $table->smallInteger('category_id')->unsigned();
-            $table->smallInteger('subcategory_id')->unsigned();
-            $table->integer('amount_left')->default(0);
-            $table->integer('price');
             $table->text('description');
-            $table->json('attributes');
             $table->timestamps();
         });
         Schema::create('product_categories', function (Blueprint $table) {
