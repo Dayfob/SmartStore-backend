@@ -9,6 +9,37 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * App\Models\Product\ProductSubcategory
+ *
+ * @property int $id
+ * @property int $category_id
+ * @property string $name
+ * @property string $slug
+ * @property string $description
+ * @property array $attributes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Product\ProductCategory|null $category
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product\Product[] $products
+ * @property-read int|null $products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereAttributes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class ProductSubcategory extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
