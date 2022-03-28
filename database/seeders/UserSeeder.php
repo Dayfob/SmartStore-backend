@@ -15,14 +15,14 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Factory::create('App\Models\User');
+        $faker = Factory::create('ru_RU');
         for ($i = 0; $i <= 100; $i++) {
-            DB::table('users')->insert([
-                'name'              => $faker->name,
-                'email'             => $faker->email,
+            DB::table('user_users')->insert([
+                'name'              => trim($faker->firstNameMale, '\n') . ' ' . trim($faker->lastName, '\n'),
+                'email'             => trim($faker->email),
                 'email_verified_at' => $faker->dateTimeThisYear,
-                'password'          => $faker->password,
-                'phone_number'      => $faker->phoneNumber,
+                'password'          => trim($faker->password),
+                'phone_number'      => trim($faker->phoneNumber),
             ]);
         }
     }
