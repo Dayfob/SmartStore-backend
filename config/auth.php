@@ -60,9 +60,17 @@ return [
     */
 
     'providers' => [
+
+        'employers' => [
+            'driver' => 'eloquent',
+            'table' => 'admin_employers',
+            'model' => App\Models\Admin\Employer::class,
+        ],
+
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'table' => 'user_users',
+            'model' => App\Models\User\User::class,
         ],
 
         // 'users' => [
@@ -88,7 +96,7 @@ return [
 
     'passwords' => [
         'users' => [
-            'provider' => 'users',
+            'provider' => 'employers',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
