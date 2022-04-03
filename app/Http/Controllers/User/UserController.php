@@ -50,20 +50,44 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+//        $credentials = $request->validate([
+//            'email' => 'required|email',
+//            'password' => 'required',
+//        ]);
 
 //        $credentials = $request->only(['email', 'password']);
 
 
-        if (Auth::attempt($credentials)) { // по каким то причинам кажется тут не регистрируется пользователь
-            $user = Auth::user();
-            $token = md5(time()) . '.' . md5($request->email);
-            $user->forceFill(['api_token' => $token,])->save();
+        $dataAttempt = array(
+            'name' => $request->get('email'),
+            'password' => $request->get('password')
+        );
 
-            return response()->json(['token' => $user]);
+
+
+//        dd($dataAttempt);
+//        dd(Auth::guard($dataAttempt));
+
+//        if (Auth::attempt($dataAttempt)){ // по каким то причинам кажется тут не регистрируется пользователь
+//            $user = Auth::user();
+//            $token = md5(time()) . '.' . md5($request->email);
+//            $user->forceFill(['api_token' => $token,])->save();
+//
+//            return response()->json(['token' => $user]);
+//        }
+
+
+        if(Auth::attempt(['email' => $request->get('email'),
+            'password' => $request->get('password')])) {
+
+            dd(['email' => $request->get('email'),
+                'password' => $request->get('password')]);
+            $user = Auth::guard('web')->getLastAttempted(); // get hold of the user
+
+            // user credentials are correct. Issue a token and use it in next requests
+            // Notice false, false => no login is performed
+        } else {
+            // invalid credentials, act accordingly
         }
 
         return response()->json(['message' => 'Предоставленные учетные данные не соответствуют.']);
