@@ -7,7 +7,15 @@ use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers\Warehouse\PriceController;
 
 Route::group(['prefix' => 'user'], function () {
-    Route::get('all', [UserController::class, 'getUsers']);
+    Route::post('login', [UserController::class, 'login']);
+    Route::post('register',[UserController::class, 'register']);
+
+    Route::middleware(['auth:api'])-> group(function() {
+        Route::get('user', [UserController::class, 'getUser']);
+        Route::post('logout', [UserController::class, 'logout']);
+
+    });
+
 //    Route::get('search', [LeftoversController::class, 'searchInWarehouses']);
 //    Route::get('product', [LeftoversController::class, 'getProductByGuid']);
 //    Route::get('crosses', [LeftoversController::class, 'getLaximoCrosses']);
