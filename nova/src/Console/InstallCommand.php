@@ -81,7 +81,7 @@ class InstallCommand extends Command
     {
         $namespace = $this->laravel->getNamespace();
 
-        $this->setAppNamespaceOn(app_path('Nova/User.php'), $namespace);
+        $this->setAppNamespaceOn(app_path('Nova/User/User.php'), $namespace);
         $this->setAppNamespaceOn(app_path('Providers/NovaServiceProvider.php'), $namespace);
     }
 

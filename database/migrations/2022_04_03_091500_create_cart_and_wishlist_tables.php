@@ -42,6 +42,10 @@ class CreateCartAndWishlistTables extends Migration
             $table->integer('item_id');
             $table->timestamps();
         });
+
+        Schema::table('user_users', function (Blueprint $table) {
+            $table->string('api_token')->unique()->nullable()->default(null);
+        });
     }
 
     /**
