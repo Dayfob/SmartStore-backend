@@ -13,4 +13,19 @@ class ProductController extends Controller
 
         return $products;
     }
+
+    public function getProduct()
+    {
+
+    }
+
+    public function updateProduct()
+    {
+
+    }
+
+    public function deleteProduct()
+    {
+
+    }
 }
