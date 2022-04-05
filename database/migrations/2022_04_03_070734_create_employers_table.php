@@ -22,7 +22,7 @@ class CreateEmployersTable extends Migration
                     $table->timestamp('email_verified_at')->nullable();
                     $table->timestamp('phone_number_verified_at')->nullable();
 
-                    $table->string('telegram_id');
+                    $table->string('telegram_id')->nullable();
                     $table->boolean('is_telegram_enabled')->default(false);
 
                     $table->index('email');
