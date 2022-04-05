@@ -12,7 +12,10 @@ class UserController extends Controller
 {
     public function getUser(Request $request)
     {
-        $userId = Auth::id();
+//        $userId = Auth::id();
+        $userId = auth("api")->user();
+
+//        dd($request);
 
         return User::whereId($userId)
             ->get()
@@ -21,19 +24,15 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        //выходит ошибка при использовании валидации, иначе пользователь регистрируется без
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:user_users',
+            'password' => 'required',
+        ]);
 
-//        $validator = Validator::make($request->all(), [
-//            'name' => 'required',
-//            'email' => 'required|email|unique:users',
-//            'password' => 'required',
-//        ]);
-//
-//        if($validator->fails()){
-//            return response()->json(['message' => 'Ошибка валидации']);
-//        }
-//        dd($request);
-
+        if($validator->fails()){
+            return response()->json(['message' => 'Ошибка валидации']);
+        }
 
         $user = new User([
             'name' => $request->get('name'),
@@ -42,6 +41,8 @@ class UserController extends Controller
         ]);
 
         if ($user->save()){
+            auth("api")->login($user);
+//            dd(auth("api")->user()); //способ логиниться с помощью сессий, см config/auth.php 45стр
             return response()->json($user);
         }
 
@@ -50,18 +51,20 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-//        $credentials = $request->validate([
-//            'email' => 'required|email',
-//            'password' => 'required',
-//        ]);
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
 //        $credentials = $request->only(['email', 'password']);
 
 
         $dataAttempt = array(
-            'name' => $request->get('email'),
+            'email' => $request->get('email'),
             'password' => $request->get('password')
         );
+
+//        $user = User::whereEmail($dataAttempt['name'])->get();
 
 
 
@@ -77,18 +80,18 @@ class UserController extends Controller
 //        }
 
 
-        if(Auth::attempt(['email' => $request->get('email'),
-            'password' => $request->get('password')])) {
-
-            dd(['email' => $request->get('email'),
-                'password' => $request->get('password')]);
-            $user = Auth::guard('web')->getLastAttempted(); // get hold of the user
-
-            // user credentials are correct. Issue a token and use it in next requests
-            // Notice false, false => no login is performed
-        } else {
-            // invalid credentials, act accordingly
-        }
+//        if(Auth::attempt(['email' => $request->get('email'),
+//            'password' => $request->get('password')])) {
+//
+//            dd(['email' => $request->get('email'),
+//                'password' => $request->get('password')]);
+//            $user = Auth::guard('web')->getLastAttempted(); // get hold of the user
+//
+//            // user credentials are correct. Issue a token and use it in next requests
+//            // Notice false, false => no login is performed
+//        } else {
+//            // invalid credentials, act accordingly
+//        }
 
         return response()->json(['message' => 'Предоставленные учетные данные не соответствуют.']);
     }
@@ -101,6 +104,7 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Ошибка']);
     }
+
 
     public function updateuserData(Request $request)
     {
