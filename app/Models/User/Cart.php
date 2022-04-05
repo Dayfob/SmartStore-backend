@@ -7,36 +7,39 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
 /**
- * App\Models\User\UserWishlist
+ * App\Models\User\Cart
  *
  * @property int $id
  * @property string $status
  * @property int $user_id
+ * @property int $total_price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User\WishlistProduct[] $products
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User\CartProduct[] $products
  * @property-read int|null $products_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @property-read \App\Models\User\User|null $user
- * @method static \Illuminate\Database\Eloquent\Builder|UserWishlist newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|UserWishlist newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|UserWishlist query()
- * @method static \Illuminate\Database\Eloquent\Builder|UserWishlist whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserWishlist whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserWishlist whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserWishlist whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserWishlist whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereTotalPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUserId($value)
  * @mixin \Eloquent
  */
-class UserWishlist extends Model
+class Cart extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'user_wishlist';
+    protected $table = 'user_cart';
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +48,7 @@ class UserWishlist extends Model
      */
     protected $fillable = [
         'user_id',
+        'total_price',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -54,6 +58,6 @@ class UserWishlist extends Model
 
     public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(WishlistProduct::class, 'wishlist_id', 'id');
+        return $this->hasMany(CartProduct::class, 'cart_id', 'id');
     }
 }

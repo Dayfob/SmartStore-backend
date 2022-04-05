@@ -48,8 +48,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property string|null $api_token
- * @property-read \App\Models\User\UserCart|null $cart
- * @property-read \App\Models\User\UserWishlist|null $wishlist
+ * @property-read \App\Models\User\Cart|null $cart
+ * @property-read \App\Models\User\Wishlist|null $wishlist
  * @method static \Illuminate\Database\Eloquent\Builder|User whereApiToken($value)
  */
 class User extends Authenticatable
@@ -100,12 +100,12 @@ class User extends Authenticatable
 
     public function cart(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(UserCart::class, 'user_id', 'id');
+        return $this->hasOne(Cart::class, 'user_id', 'id');
     }
 
     public function wishlist(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(UserWishlist::class, 'user_id', 'id');
+        return $this->hasOne(Wishlist::class, 'user_id', 'id');
     }
 
     public function role(): \Illuminate\Database\Eloquent\Relations\HasOne

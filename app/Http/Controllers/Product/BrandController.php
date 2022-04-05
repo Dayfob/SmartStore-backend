@@ -9,12 +9,15 @@ class BrandController extends Controller
 {
     public function getBrands()
     {
-//        $products = Product::all()->toJson();
-//
-//        return $products;
+
     }
 
     public function getBrand()
+    {
+
+    }
+
+    public function createBrand()
     {
 
     }

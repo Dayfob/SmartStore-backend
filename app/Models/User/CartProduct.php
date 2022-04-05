@@ -18,7 +18,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int $item_amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User\UserCart|null $cart
+ * @property-read \App\Models\User\Cart|null $cart
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read Product|null $products
@@ -54,7 +54,7 @@ class CartProduct extends Model
 
     public function cart(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(UserCart::class, 'cart_id');
+        return $this->belongsTo(Cart::class, 'cart_id');
     }
 
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -9,12 +9,17 @@ class ProductController extends Controller
 {
     public function getProducts()
     {
-        $products = Product::all()->toJson();
-
-        return $products;
+//        $products = Product::all()->toJson();
+//
+//        return $products;
     }
 
     public function getProduct()
+    {
+
+    }
+
+    public function createProduct()
     {
 
     }

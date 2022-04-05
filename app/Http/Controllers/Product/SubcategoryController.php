@@ -8,12 +8,15 @@ class SubcategoryController extends Controller
 {
     public function getSubcategories()
     {
-//        $products = Product::all()->toJson();
-//
-//        return $products;
+
     }
 
     public function getSubcategory()
+    {
+
+    }
+
+    public function createSubcategory()
     {
 
     }

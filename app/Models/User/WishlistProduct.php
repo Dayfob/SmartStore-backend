@@ -20,7 +20,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \App\Models\User\UserWishlist|null $order
+ * @property-read \App\Models\User\Wishlist|null $order
  * @property-read Product|null $products
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
@@ -52,7 +52,7 @@ class WishlistProduct extends Model
 
     public function order(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(UserWishlist::class, 'wishlist_id');
+        return $this->belongsTo(Wishlist::class, 'wishlist_id');
     }
 
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -8,12 +8,15 @@ class CategoryController extends Controller
 {
     public function getCategories()
     {
-//        $products = Product::all()->toJson();
-//
-//        return $products;
+
     }
 
     public function getCategory()
+    {
+
+    }
+
+    public function createCategory()
     {
 
     }
