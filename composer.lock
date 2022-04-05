@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "61e3884b41c5ac4adff3c5e0cff435cf",
+    "content-hash": "fa136603c62d59c0a20866af172ff1af",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1601,7 +1601,7 @@
             "dist": {
                 "type": "path",
                 "url": "./nova",
-                "reference": "e36abe2db502d615830f3d248f84a10c45ab04bf"
+                "reference": "70de3b8c974d2a74c4a901b0c7afd664ec9282db"
             },
             "require": {
                 "brick/money": "^0.5.0",
@@ -9224,5 +9224,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }
