@@ -6,16 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
     public function getUser(Request $request)
     {
-//        $userId = Auth::id();
-        $userId = auth("api")->user();
-
-//        dd($request);
+        $userId = $request->user()->id;
 
         return User::whereId($userId)
             ->get()
@@ -28,22 +27,22 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:user_users',
             'password' => 'required',
+            'device_name' => 'required|string'
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json(['message' => 'Ошибка валидации']);
         }
 
         $user = new User([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'password' => bcrypt($request->get('password')),
+            'password' => Hash::make($request->get('password')),
         ]);
 
-        if ($user->save()){
-            auth("api")->login($user);
-//            dd(auth("api")->user()); //способ логиниться с помощью сессий, см config/auth.php 45стр
-            return response()->json($user);
+        if ($user->save()) {
+            $token = $user->createToken($request->device_name)->plainTextToken;
+            return response()->json(['token' => $token], 200);
         }
 
         return response()->json(['message' => 'Ошибка']);
@@ -51,49 +50,32 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
+            'device_name' => 'required|string'
         ]);
 
-//        $credentials = $request->only(['email', 'password']);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Ошибка валидации']);
+        }
+
+        $user = User::whereEmail($request->get('email'))->first();
+
+//        dd($user);
+        dd(Hash::check($request->get('password'), $user->password));
+//        dd($request->get('password'));
+//        dd($user->password);
 
 
-        $dataAttempt = array(
-            'email' => $request->get('email'),
-            'password' => $request->get('password')
-        );
-
-//        $user = User::whereEmail($dataAttempt['name'])->get();
 
 
+        if (!$user || !Hash::check($request->get('password'), $user->password)) {
+//            throw ValidationException::withMessages(['email' => ['Предоставленные учетные данные неверны.']]);
+            return response()->json(['Предоставленные учетные данные неверны.']);
+        }
 
-//        dd($dataAttempt);
-//        dd(Auth::guard($dataAttempt));
-
-//        if (Auth::attempt($dataAttempt)){ // по каким то причинам кажется тут не регистрируется пользователь
-//            $user = Auth::user();
-//            $token = md5(time()) . '.' . md5($request->email);
-//            $user->forceFill(['api_token' => $token,])->save();
-//
-//            return response()->json(['token' => $user]);
-//        }
-
-
-//        if(Auth::attempt(['email' => $request->get('email'),
-//            'password' => $request->get('password')])) {
-//
-//            dd(['email' => $request->get('email'),
-//                'password' => $request->get('password')]);
-//            $user = Auth::guard('web')->getLastAttempted(); // get hold of the user
-//
-//            // user credentials are correct. Issue a token and use it in next requests
-//            // Notice false, false => no login is performed
-//        } else {
-//            // invalid credentials, act accordingly
-//        }
-
-        return response()->json(['message' => 'Предоставленные учетные данные не соответствуют.']);
+        return response()->json($user->createToken($request->get('device_name'))->plainTextToken);
     }
 
     public function logout(Request $request)
