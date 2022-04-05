@@ -45,6 +45,7 @@ class CreateCartAndWishlistTables extends Migration
 
         Schema::table('user_users', function (Blueprint $table) {
             $table->string('api_token')->unique()->nullable()->default(null);
+            $table->string('device_name')->nullable()->default(null);
         });
     }
 

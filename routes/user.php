@@ -10,7 +10,8 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('login', [UserController::class, 'login']);
     Route::post('register',[UserController::class, 'register']);
 
-    Route::middleware(['auth:api'])-> group(function() {
+//    Route::middleware(['auth:api'])-> group(function() {
+    Route::middleware(['auth:sanctum'])-> group(function() {
         Route::get('me', [UserController::class, 'getUser']);
         Route::post('logout', [UserController::class, 'logout']);
 
