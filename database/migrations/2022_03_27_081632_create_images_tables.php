@@ -16,19 +16,19 @@ class CreateImagesTables extends Migration
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id')->unsigned();
-            $table->char('image', 255);
+            $table->string('image', 255);
             $table->timestamps();
         });
         Schema::create('user_images', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->unsigned();
-            $table->char('image');
+            $table->string('image');
             $table->timestamps();
         });
         Schema::create('product_brand_images', function (Blueprint $table) {
             $table->id();
             $table->integer('brand_id')->unsigned();
-            $table->char('image');
+            $table->string('image');
             $table->timestamps();
         });
     }
