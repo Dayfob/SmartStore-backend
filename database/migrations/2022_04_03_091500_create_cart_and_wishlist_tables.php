@@ -15,7 +15,7 @@ class CreateCartAndWishlistTables extends Migration
     {
         Schema::create('user_cart', function (Blueprint $table) {
             $table->id();
-            $table->char('status', 255);
+            $table->string('status', 255);
             $table->integer('user_id');
             $table->integer('total_price');
             $table->timestamps();
@@ -23,7 +23,7 @@ class CreateCartAndWishlistTables extends Migration
 
         Schema::create('user_wishlist', function (Blueprint $table) {
             $table->id();
-            $table->char('status', 255);
+            $table->string('status', 255);
             $table->integer('user_id');
             $table->timestamps();
         });

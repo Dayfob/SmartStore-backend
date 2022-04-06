@@ -15,11 +15,11 @@ class CreateUsersTable extends Migration
     {
         Schema::create('user_users', function (Blueprint $table) {
             $table->id();
-            $table->char('iin', 255)->nullable();
-            $table->char('name', 255);
-            $table->char('phone_number', 255)->nullable();
-            $table->char('email', 255);
-            $table->char('password', 255);
+            $table->string('iin', 255)->nullable();
+            $table->string('name', 255);
+            $table->string('phone_number', 255)->nullable();
+            $table->string('email', 255);
+            $table->string('password', 255);
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('employer')->default(0);
             $table->softDeletes();
@@ -27,23 +27,23 @@ class CreateUsersTable extends Migration
         });
         Schema::create('order_orders', function (Blueprint $table) {
             $table->id();
-            $table->char('status', 255);
+            $table->string('status', 255);
             $table->integer('user_id');
             $table->integer('total_price');
             $table->tinyInteger('is_sent')->default(0);
             $table->tinyInteger('is_paid')->default(0);
-            $table->char('payment_method', 255)->nullable();
-            $table->char('delivery_method', 255)->nullable();
-            $table->char('address', 255)->nullable();
+            $table->string('payment_method', 255)->nullable();
+            $table->string('delivery_method', 255)->nullable();
+            $table->string('address', 255)->nullable();
             $table->text('additional_information')->nullable();
             $table->integer('delivery_price')->default(0);
             $table->timestamps();
         });
         Schema::create('product_products', function (Blueprint $table) {
             $table->id();
-            $table->char('name', 255);
-            $table->char('slug', 255);
-            $table->char('image_url', 512);
+            $table->string('name', 255);
+            $table->string('slug', 255);
+            $table->string('image_url', 512);
             $table->text('description');
             $table->smallInteger('brand_id')->unsigned();
             $table->smallInteger('category_id')->unsigned();
@@ -55,23 +55,23 @@ class CreateUsersTable extends Migration
         });
         Schema::create('product_brands', function (Blueprint $table) {
             $table->id();
-            $table->char('name', 255);
-            $table->char('slug', 255);
+            $table->string('name', 255);
+            $table->string('slug', 255);
             $table->text('description');
             $table->timestamps();
         });
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
-            $table->char('name', 255);
-            $table->char('slug', 255);
+            $table->string('name', 255);
+            $table->string('slug', 255);
             $table->text('description');
             $table->timestamps();
         });
         Schema::create('product_category_subcategories', function (Blueprint $table) {
             $table->id();
             $table->smallInteger('category_id')->unsigned();
-            $table->char('name', 255);
-            $table->char('slug', 255);
+            $table->string('name', 255);
+            $table->string('slug', 255);
             $table->text('description');
             $table->json('attributes');
             $table->timestamps();
@@ -85,7 +85,7 @@ class CreateUsersTable extends Migration
         });
         Schema::create('admin_roles', function (Blueprint $table) {
             $table->id();
-            $table->char('role_name', 255);
+            $table->string('role_name', 255);
             $table->text('role_description');
             $table->timestamps();
         });

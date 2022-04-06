@@ -60,22 +60,16 @@ class UserController extends Controller
             return response()->json(['message' => 'Ошибка валидации']);
         }
 
-        $user = User::whereEmail($request->get('email'))->first();
+        $userEmail = $request->get('email');
+        $password = $request->get('password');
 
-//        dd($user);
-        dd(Hash::check($request->get('password'), $user->password));
-//        dd($request->get('password'));
-//        dd($user->password);
+        $user = User::whereEmail($userEmail)->first();
 
-
-
-
-        if (!$user || !Hash::check($request->get('password'), $user->password)) {
-//            throw ValidationException::withMessages(['email' => ['Предоставленные учетные данные неверны.']]);
-            return response()->json(['Предоставленные учетные данные неверны.']);
+        if (Hash::check($password, $user->getAttribute('password'))){
+            return response()->json($user->createToken($request->get('device_name'))->plainTextToken);
         }
 
-        return response()->json($user->createToken($request->get('device_name'))->plainTextToken);
+        return response()->json(['Предоставленные учетные данные неверны.']);
     }
 
     public function logout(Request $request)
