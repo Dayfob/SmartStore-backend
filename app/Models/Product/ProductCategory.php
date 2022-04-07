@@ -29,7 +29,7 @@ class ProductCategory extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'product_category';
+    protected $table = 'product_categories';
 
     /**
      * The attributes that are mass assignable.
