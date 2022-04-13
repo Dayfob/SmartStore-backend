@@ -64,7 +64,7 @@ class UserController extends Controller
         $user = User::whereEmail($userEmail)->first();
 
         if (Hash::check($password, $user->getAttribute('password'))){
-            return response()->json($user->createToken($request->get('device_name'))->plainTextToken);
+            return response()->json(["token" => $user->createToken($request->get('device_name'))->plainTextToken]);
         }
 
         return response()->json(['Предоставленные учетные данные неверны.']);
