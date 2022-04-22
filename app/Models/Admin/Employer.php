@@ -8,8 +8,8 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Laravel\Nova\Actions\Actionable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
-//use Pktharindu\NovaPermissions\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * App\Models\Admin\Employer
@@ -61,7 +61,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class Employer extends Authenticatable implements CanResetPasswordContract
 {
-    use Actionable, Notifiable, CanResetPassword;
+    use Actionable, Notifiable, CanResetPassword, HasRoles;
 
     protected $table = 'admin_employers';
 
