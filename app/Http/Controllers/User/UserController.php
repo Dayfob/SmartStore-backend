@@ -64,7 +64,7 @@ class UserController extends Controller
         $user = User::whereEmail($userEmail)->first();
 
         if (Hash::check($password, $user->getAttribute('password'))){
-            return response()->json($user->createToken($request->get('device_name'))->plainTextToken);
+            return response()->json(["token" => $user->createToken($request->get('device_name'))->plainTextToken]);
         }
 
         return response()->json(['Предоставленные учетные данные неверны.']);
@@ -80,8 +80,33 @@ class UserController extends Controller
     }
 
 
-    public function updateuserData(Request $request)
+    public function updateUserData(Request $request) // надо проверить работоспособность
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:user_users',
+            'phone' => 'required',
+            'iin' => 'required|string'
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Ошибка валидации']);
+        }
+
+        $userId = $request->user()->id;
+
+        $user = User::whereId($userId)
+            ->get()->first();
+
+        $user->name = $request->get("name");
+        $user->email = $request->get("email");
+        $user->phone_number = $request->get("phone");
+        $user->iin = $request->get("iin");
+
+        if ($user->save()) {
+            return response()->json(['message' => 'Данные успешно обновлены']);
+        }
+
+        return response()->json(['message' => 'Ошибка']);
     }
 }
