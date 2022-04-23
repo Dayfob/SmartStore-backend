@@ -2,13 +2,12 @@
 
 namespace App\Models\Admin;
 
-use Illuminate\Contracts\Auth\CanResetPassword as
-    CanResetPasswordContract;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Laravel\Nova\Actions\Actionable;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Nova\Actions\Actionable;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -58,6 +57,12 @@ use Spatie\Permission\Traits\HasRoles;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Admin\Message[] $messages
  * @property-read int|null $messages_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|News[] $news
+ * @property-read int|null $news_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read int|null $permissions_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Employer permission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employer role($roles, $guard = null)
  */
 class Employer extends Authenticatable implements CanResetPasswordContract
 {
@@ -84,5 +89,10 @@ class Employer extends Authenticatable implements CanResetPasswordContract
     public function isAdmin(): bool
     {
         return $this->roles->contains('slug', 'admin');
+    }
+
+    public function news(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(News::class, 'user_id', 'id');
     }
 }

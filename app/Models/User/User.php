@@ -51,6 +51,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property-read \App\Models\User\Cart|null $cart
  * @property-read \App\Models\User\Wishlist|null $wishlist
  * @method static \Illuminate\Database\Eloquent\Builder|User whereApiToken($value)
+ * @property string|null $device_name
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDeviceName($value)
  */
 class User extends Authenticatable
 {
