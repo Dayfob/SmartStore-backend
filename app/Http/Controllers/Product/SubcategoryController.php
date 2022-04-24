@@ -16,6 +16,12 @@ class SubcategoryController extends Controller
         return response()->json($subcategories);
     }
 
+    public function getAllSubcategories()
+    {
+        $subcategories = ProductSubcategory::all();
+        return response()->json($subcategories);
+    }
+
     public function createSubcategory()
     {
 

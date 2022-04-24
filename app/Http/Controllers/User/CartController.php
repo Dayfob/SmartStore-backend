@@ -14,7 +14,7 @@ class CartController extends Controller
     {
         $user = Auth::user();
 
-        $cart = Cart::whereUserId($user->id)->get();
+        $cart = Cart::whereUserId($user->id)->first();
         $cartProducts = CartProduct::whereCartId($cart->id)->get();
 
         $data = [
@@ -26,11 +26,47 @@ class CartController extends Controller
 
     public function addProduct(Request $request)
     {
+        $user = Auth::user();
+        $cart = Cart::whereUserId($user->id)->first();
+        $item_id = $request->get("item_id");
+        $item_amount = $request->get("item_amount");
 
+        $cartProduct = new CartProduct();
+        $cartProduct->cart_id = $cart->id;
+        $cartProduct->item_id = $item_id;
+        $cartProduct->item_amount = $item_amount;
+        $cartProduct->save();
+        if ($cartProduct->save()) {
+            return response()->json($cartProduct);
+        }
+
+        return response()->json()->isServerError();
+    }
+
+    public function updateProduct(Request $request)
+    {
+        $user = Auth::user();
+        $cart = Cart::whereUserId($user->id)->first();
+        $item_id = $request->get("item_id");
+        $item_amount = $request->get("item_amount");
+
+        $cartProduct = CartProduct::where('cart_id', $cart->id)->where('item_id', $item_id)->first();
+        $cartProduct->item_amount = $item_amount;
+        if ($cartProduct->save()){
+            return response()->json($cartProduct);
+        }
+        return response()->json()->isServerError();
     }
 
     public function deleteProduct(Request $request)
     {
+        $user = Auth::user();
+        $cart = Cart::whereUserId($user->id)->first();
+        $item_id = $request->get("item_id");
 
+       if (CartProduct::where('cart_id', $cart->id)->where('item_id', $item_id)->delete()){
+           return response()->json()->isSuccessful();
+       }
+       return response()->json()->isServerError();
     }
 }
