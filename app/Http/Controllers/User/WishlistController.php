@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product\Product;
 use App\Models\User\Wishlist;
 use App\Models\User\WishlistProduct;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,16 @@ class WishlistController extends Controller
 
         $wishlist = Wishlist::whereUserId($user->id)->first();
         $wishlistProducts = WishlistProduct::whereWishlistId($wishlist->id)->get();
+
+        $wishlist->user_id = $wishlist->user;
+        foreach ($wishlistProducts as $wishlistProduct){
+            $wishlistProductId = $wishlistProduct->item_id;
+            $product = Product::whereId($wishlistProductId)->first();
+            $product->brand_id = $product->brand;
+            $product->category_id = $product->category;
+            $product->subcategory_id = $product->subcategory;
+            $wishlistProduct->item_id = $product;
+        }
 
         $data = [
             "wishlist" => $wishlist,

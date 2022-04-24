@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
+use App\Models\Product\Product;
 use App\Models\User\Cart;
 use App\Models\User\CartProduct;
 use Illuminate\Http\Request;
@@ -16,9 +17,24 @@ class OrderController extends Controller
     {
         $user = Auth::user();
 
-        $order = Order::whereUserId($user->id)->get();
+        $orders = Order::whereUserId($user->id)->get();
 
-        return response()->json($order);
+        foreach ($orders as $order) {
+            $order->user_id = $order->user;
+            $orderProducts = OrderProduct::whereOrderId($order->id)->get();
+            foreach ($orderProducts as $orderProduct){
+                $product = Product::whereId($orderProduct->item_id)->first();
+                $product->brand_id = $product->brand;
+                $product->category_id = $product->category;
+                $product->subcategory_id = $product->subcategory;
+                $orderProduct->item_id = $product;
+            }
+            $data[] = [
+                "order" => $order,
+                "orderProducts" => $orderProducts];
+        }
+
+        return response()->json($data);
     }
 
     public function getOrder(Request $request)
@@ -27,7 +43,17 @@ class OrderController extends Controller
         $orderId = $request->input("order_id");
 
         $order = Order::whereId($orderId)->first();
+        $order->user_id = $order->user;
+
         $orderProducts = OrderProduct::whereOrderId($order->id)->get();
+
+        foreach ($orderProducts as $orderProduct){
+            $product = Product::whereId($orderProduct->item_id)->first();
+            $product->brand_id = $product->brand;
+            $product->category_id = $product->category;
+            $product->subcategory_id = $product->subcategory;
+            $orderProduct->item_id = $product;
+        }
 
         $data = [
             "order" => $order,
@@ -64,7 +90,7 @@ class OrderController extends Controller
         $order->additional_information = $additional_information;
         $order->delivery_price = $delivery_price;
         if ($order->save()) {
-            foreach ($cartProducts as $cartProduct){
+            foreach ($cartProducts as $cartProduct) {
                 $orderProduct = new OrderProduct();
                 $orderProduct->order_id = $order->id;
                 $orderProduct->item_id = $cartProduct->item_id;
@@ -84,7 +110,7 @@ class OrderController extends Controller
         $order = Order::whereId($orderId)->first();
         $order->status = "Отменен";
 
-        if ($order->save()){
+        if ($order->save()) {
             return response()->json($order);
         }
         return response()->json()->isServerError();

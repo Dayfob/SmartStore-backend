@@ -55,7 +55,7 @@ class WishlistProduct extends Model
         return $this->belongsTo(Wishlist::class, 'wishlist_id');
     }
 
-    public function products(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Product::class, 'item_id');
     }

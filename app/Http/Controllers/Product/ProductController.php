@@ -11,6 +11,13 @@ class ProductController extends Controller
     public function getProducts(Request $request)
     {
         $products = Product::all();
+
+        foreach ($products as $product){
+            $product->brand_id = $product->brand;
+            $product->category_id = $product->category;
+            $product->subcategory_id = $product->subcategory;
+        }
+
         return response()->json($products);
     }
 
@@ -18,6 +25,13 @@ class ProductController extends Controller
     {
         $categoryId = $request->get('category_id');
         $products = Product::whereCategoryId($categoryId)->get();
+
+        foreach ($products as $product){
+            $product->brand_id = $product->brand;
+            $product->category_id = $product->category;
+            $product->subcategory_id = $product->subcategory;
+        }
+
         return response()->json($products);
     }
 
@@ -25,6 +39,13 @@ class ProductController extends Controller
     {
         $subcategoryId = $request->get('subcategory_id');
         $products = Product::whereSubcategoryId($subcategoryId)->get();
+
+        foreach ($products as $product){
+            $product->brand_id = $product->brand;
+            $product->category_id = $product->category;
+            $product->subcategory_id = $product->subcategory;
+        }
+
         return response()->json($products);
     }
 
@@ -32,28 +53,25 @@ class ProductController extends Controller
     {
         $brandId = $request->get('brand_id');
         $products = Product::whereBrandId($brandId)->get();
+
+        foreach ($products as $product){
+            $product->brand_id = $product->brand;
+            $product->category_id = $product->category;
+            $product->subcategory_id = $product->subcategory;
+        }
+
         return response()->json($products);
     }
 
     public function getProduct(Request $request)
     {
         $productId = $request->get('product_id');
-        $product = Product::whereId($productId)->get();
+        $product = Product::whereId($productId)->first();
+
+        $product->brand_id = $product->brand;
+        $product->category_id = $product->category;
+        $product->subcategory_id = $product->subcategory;
+
         return response()->json($product);
-    }
-
-    public function createProduct()
-    {
-
-    }
-
-    public function updateProduct()
-    {
-
-    }
-
-    public function deleteProduct()
-    {
-
     }
 }

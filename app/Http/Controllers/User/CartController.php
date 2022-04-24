@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product\Product;
 use App\Models\User\CartProduct;
 use App\Models\User\Cart;
 use Illuminate\Http\Request;
@@ -16,6 +17,15 @@ class CartController extends Controller
 
         $cart = Cart::whereUserId($user->id)->first();
         $cartProducts = CartProduct::whereCartId($cart->id)->get();
+
+        $cart->user_id = $cart->user;
+        foreach ($cartProducts as $cartProduct){
+            $product = Product::whereId($cartProduct->item_id)->first();
+            $product->brand_id = $product->brand;
+            $product->category_id = $product->category;
+            $product->subcategory_id = $product->subcategory;
+            $cartProduct->item_id = $product;
+        }
 
         $data = [
             "cart" => $cart,
