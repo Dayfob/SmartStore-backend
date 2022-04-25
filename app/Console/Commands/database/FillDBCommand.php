@@ -85,7 +85,7 @@ class FillDBCommand extends Command
         $subcategory1_1->name = 'Наблюдение';
         $subcategory1_1->slug = 'camery_nabludenie';
         $subcategory1_1->description = 'Это устройства для наблюдения.';
-        $subcategory1_1->attributes = '{"attributes": ["Номер продукта",
+        $subcategory1_1->attributes = ["Номер продукта",
                                                         "UPC",
                                                         "Камера",
                                                         "Разрешение",
@@ -95,7 +95,7 @@ class FillDBCommand extends Command
                                                         "Подключение",
                                                         "Расстояние обнаружения",
                                                         "Размер (В x Ш x Г)",
-                                                        "Вес"]}';
+                                                        "Вес"];
         $subcategory1_1->save();
         $subcategory1_1Id = ProductSubcategory::whereSlug('camery_nabludenie')->first()->id;
 
@@ -104,13 +104,13 @@ class FillDBCommand extends Command
         $subcategory1_2->name = 'Дверные звоноки';
         $subcategory1_2->slug = 'camery_dvernie_zvonki';
         $subcategory1_2->description = 'Это дверные звонки.';
-        $subcategory1_2->attributes = '{"attributes": ["Номер продукта",
+        $subcategory1_2->attributes = ["Номер продукта",
                                                         "UPC",
                                                         "Требования",
                                                         "Стандарты",
                                                         "Питание",
                                                         "Размер (В x Ш x Г)",
-                                                        "Вес"]}';
+                                                        "Вес"];
         $subcategory1_2->save();
         $subcategory1_2Id = ProductSubcategory::whereSlug('camery_dvernie_zvonki')->first()->id;
 
@@ -119,7 +119,7 @@ class FillDBCommand extends Command
         $subcategory1_3->name = 'Аксессуары';
         $subcategory1_3->slug = 'camery_aksessuary';
         $subcategory1_3->description = 'Это аксессуары.';
-        $subcategory1_3->attributes = '{"attributes": ["UPC", "Цвет"]}';
+        $subcategory1_3->attributes = ["UPC", "Цвет"];
         $subcategory1_3->save();
         $subcategory1_3Id = ProductSubcategory::whereSlug('camery_aksessuary')->first()->id;
 
@@ -129,8 +129,8 @@ class FillDBCommand extends Command
         $subcategory2_1->name = 'Лампочки';
         $subcategory2_1->slug = 'osveshenie_lampochki';
         $subcategory2_1->description = 'Это лапочки.';
-        $subcategory2_1->attributes = '{"attributes": ["Номер продукта", "UPC", "Цвет", "Яркость", "Продолжительность работы",
-                                                        "Цоколь", "Мощность"]}';
+        $subcategory2_1->attributes = ["Номер продукта", "UPC", "Цвет", "Яркость", "Продолжительность работы",
+                                                        "Цоколь", "Мощность"];
         $subcategory2_1->save();
         $subcategory2_1Id = ProductSubcategory::whereSlug('osveshenie_lampochki')->first()->id;
 
@@ -139,8 +139,8 @@ class FillDBCommand extends Command
         $subcategory2_2->name = 'Розетки';
         $subcategory2_2->slug = 'osveshenie_rozetki';
         $subcategory2_2->description = 'Это розетки.';
-        $subcategory2_2->attributes = '{"attributes": ["Номер продукта", "UPC", "Цвет", "Программное обеспечение",
-                                                        "Материал", "Размер (В x Ш x Г)", "Вес"]}';
+        $subcategory2_2->attributes = ["Номер продукта", "UPC", "Цвет", "Программное обеспечение",
+                                                        "Материал", "Размер (В x Ш x Г)", "Вес"];
         $subcategory2_2->save();
         $subcategory2_2Id = ProductSubcategory::whereSlug('osveshenie_rozetki')->first()->id;
 
@@ -149,7 +149,7 @@ class FillDBCommand extends Command
         $subcategory2_3->name = 'Аксессуары';
         $subcategory2_3->slug = 'osveshenie_aksessuary';
         $subcategory2_3->description = 'Это аксессуары.';
-        $subcategory2_3->attributes = '{"attributes": ["UPC", "Цвет"]}';
+        $subcategory2_3->attributes = ["UPC", "Цвет"];
         $subcategory2_3->save();
         $subcategory2_3Id = ProductSubcategory::whereSlug('osveshenie_aksessuary')->first()->id;
 
@@ -159,8 +159,8 @@ class FillDBCommand extends Command
         $subcategory3_1->name = 'Термостаты';
         $subcategory3_1->slug = 'temperatura_termostat';
         $subcategory3_1->description = 'Это термостаты.';
-        $subcategory3_1->attributes = '{"attributes": ["Номер продукта", "UPC", "Цвет", "Дисплей", "Сенсоры",
-                                                        "Способ подключения", "Языки", "Потребление"]}';
+        $subcategory3_1->attributes = ["Номер продукта", "UPC", "Цвет", "Дисплей", "Сенсоры",
+                                                        "Способ подключения", "Языки", "Потребление"];
         $subcategory3_1->save();
         $subcategory3_1Id = ProductSubcategory::whereSlug('temperatura_termostat')->first()->id;
 
@@ -169,8 +169,8 @@ class FillDBCommand extends Command
         $subcategory3_2->name = 'Вентиляционные отверстия';
         $subcategory3_2->slug = 'temperatura_ventelyazia';
         $subcategory3_2->description = 'Это вентиляционные отверстия.';
-        $subcategory3_2->attributes = '{"attributes": ["Номер продукта", "UPC", "Цвет", "Материал",
-                                                        "Совместимость", "Размер (В x Ш x Г)"]}';
+        $subcategory3_2->attributes = ["Номер продукта", "UPC", "Цвет", "Материал",
+                                                        "Совместимость", "Размер (В x Ш x Г)"];
         $subcategory3_2->save();
         $subcategory3_2Id = ProductSubcategory::whereSlug('temperatura_ventelyazia')->first()->id;
 
@@ -179,7 +179,7 @@ class FillDBCommand extends Command
         $subcategory3_3->name = 'Аксессуары';
         $subcategory3_3->slug = 'temperatura_aksessuary';
         $subcategory3_3->description = 'Это аксессуары.';
-        $subcategory3_3->attributes = '{"attributes": ["UPC", "Цвет"]}';
+        $subcategory3_3->attributes = ["UPC", "Цвет"];
         $subcategory3_3->save();
         $subcategory3_3Id = ProductSubcategory::whereSlug('temperatura_aksessuary')->first()->id;
 
@@ -220,7 +220,7 @@ class FillDBCommand extends Command
         $product1_1_1->brand_id = $brand1Id;
         $product1_1_1->amount_left = 100;
         $product1_1_1->price = 60990;
-        $product1_1_1->attributes = '{"attributes": ["RCHSIMV1/W",
+        $product1_1_1->attributes = ["RCHSIMV1/W",
                                                         "085267439022",
                                                         "90 поле зрения",
                                                         "QVGA (320x240)",
@@ -231,7 +231,7 @@ class FillDBCommand extends Command
                                                         "До 7 метров",
                                                         "125,7 x 50,8 x 46,2 мм",
                                                         "С раздвижной пластиной 165 г
-                                                        С настольным креплением 180 г"]}';
+                                                        С настольным креплением 180 г"];
         $product1_1_1->save();
 
         $product1_1_2 = new Product();
@@ -250,7 +250,7 @@ class FillDBCommand extends Command
         $product1_1_2->brand_id = $brand3Id;
         $product1_1_2->amount_left = 100;
         $product1_1_2->price = 15990;
-        $product1_1_2->attributes = '{"attributes": ["-",
+        $product1_1_2->attributes = ["-",
                                                     "-",
                                                     "110 поле зрения",
                                                     "Запись и просмотр в 1080p HD видео в течение дня и с инфракрасным HD ночным видением после наступления темноты",
@@ -259,7 +259,7 @@ class FillDBCommand extends Command
                                                     "Поддерживает 2,4 ГГц 802.11 g/n; не поддерживает подключение к специальным (или одноранговым) или платным WiFi-сетям. Требуется минимальная скорость загрузки 2 Мбит/с.",
                                                     "До 7 метров", "125,7 x 50,8 x 46,2 мм",
                                                     "С раздвижной пластиной 165 г
-                                                    С настольным креплением 180 г"]}';
+                                                    С настольным креплением 180 г"];
         $product1_1_2->save();
 
         // продукты категории 1 подкатегории 2
@@ -281,7 +281,7 @@ class FillDBCommand extends Command
         $product1_2_1->brand_id = $brand1Id;
         $product1_2_1->amount_left = 100;
         $product1_2_1->price = 50990;
-        $product1_2_1->attributes = '{"attributes": ["AUG-AB02-M02-S02",
+        $product1_2_1->attributes = ["AUG-AB02-M02-S02",
                                                         "853984006250",
                                                         "Существующий проводной дверной
                                                         звонок 12-24VAC Проводной силовой
@@ -293,7 +293,7 @@ class FillDBCommand extends Command
                                                         "Спецификация Bluetooth v4.0 (Bluetooth Smart), 5 ГГц, 2,4 ГГц 80211(B/G/N)",
                                                         "Проводная мощность 12-24VAC",
                                                         "2.9 x 0.9 x 2.9",
-                                                        "0,25 фунта"]}';
+                                                        "0,25 фунта"];
         $product1_2_1->save();
 
         $product1_2_2 = new Product();
@@ -308,7 +308,7 @@ class FillDBCommand extends Command
         $product1_2_2->brand_id = $brand3Id;
         $product1_2_2->amount_left = 87;
         $product1_2_2->price = 90490;
-        $product1_2_2->attributes = '{"attributes": ["8VR1P6-0EN0",
+        $product1_2_2->attributes = ["8VR1P6-0EN0",
                                                         "852239005208",
                                                         "Существующий проводной дверной
                                                         звонок 12-24VAC Проводной силовой
@@ -320,7 +320,7 @@ class FillDBCommand extends Command
                                                         "Спецификация Bluetooth v4.0 (Bluetooth Smart), 5 ГГц, 2,4 ГГц 80211(B/G/N)",
                                                         "Проводная мощность 12-24VAC",
                                                         "4.50 x 1.85 x .80",
-                                                        "0,25 фунта"]}';
+                                                        "0,25 фунта"];
         $product1_2_2->save();
 
         // продукты категории 1 подкатегории 3
@@ -340,7 +340,7 @@ Bluetooth включен для легкого сопряжения с суще�
         $product1_3_1->brand_id = $brand3Id;
         $product1_3_1->amount_left = 25;
         $product1_3_1->price = 29900;
-        $product1_3_1->attributes = '{"attributes": ["853984006250", "Черный"]}';
+        $product1_3_1->attributes = ["853984006250", "Черный"];
         $product1_3_1->save();
 
         $product1_3_2 = new Product();
@@ -359,7 +359,7 @@ Bluetooth включен для легкого сопряжения с суще�
         $product1_3_2->brand_id = $brand3Id;
         $product1_3_2->amount_left = 25;
         $product1_3_2->price = 29900;
-        $product1_3_2->attributes = '{"attributes": ["853984006320", "Черный"]}';
+        $product1_3_2->attributes = ["853984006320", "Черный"];
         $product1_3_2->save();
 
         // продукты категории 2 подкатегории 1
@@ -377,13 +377,13 @@ Bluetooth включен для легкого сопряжения с суще�
         $product2_1_1->brand_id = $brand1Id;
         $product2_1_1->amount_left = 87;
         $product2_1_1->price = 4490;
-        $product2_1_1->attributes = '{"attributes": ["E11-G13",
+        $product2_1_1->attributes = ["E11-G13",
                                                         "852239005208",
                                                         "мягкий белый",
                                                         "Регулируемая до 800 люмен",
                                                         "25 000 часов",
                                                         "E26",
-                                                        "9 Вт"]}';
+                                                        "9 Вт"];
         $product2_1_1->save();
 
         $product2_1_2 = new Product();
@@ -400,13 +400,13 @@ Bluetooth включен для легкого сопряжения с суще�
         $product2_1_2->brand_id = $brand2Id;
         $product2_1_2->amount_left = 87;
         $product2_1_2->price = 8490;
-        $product2_1_2->attributes = '{"attributes": ["E11-G13",
+        $product2_1_2->attributes = ["E11-G13",
                                                         "852239005208",
                                                         "мягкий белый",
                                                         "Регулируемая до 800 люмен",
                                                         "25 000 часов",
                                                         "E26",
-                                                        "9 Вт"]}';
+                                                        "9 Вт"];
         $product2_1_2->save();
 
         // продукты категории 2 подкатегории 2
@@ -426,13 +426,13 @@ Bluetooth включен для легкого сопряжения с суще�
         $product2_2_1->brand_id = $brand3Id;
         $product2_2_1->amount_left = 87;
         $product2_2_1->price = 23500;
-        $product2_2_1->attributes = '{"attributes": ["2472DWH",
+        $product2_2_1->attributes = ["2472DWH",
                                                         "813922010251",
                                                         "белый",
                                                         "да",
                                                         "УФ-стабилизированный поликарбонат",
                                                         "4.1 x 1.73 x 1.73",
-                                                        "120 грамм"]}';
+                                                        "120 грамм"];
         $product2_2_1->save();
 
         $product2_2_2 = new Product();
@@ -447,13 +447,13 @@ Bluetooth включен для легкого сопряжения с суще�
         $product2_2_2->brand_id = $brand2Id;
         $product2_2_2->amount_left = 56;
         $product2_2_2->price = 35000;
-        $product2_2_2->attributes = '{"attributes": ["DEV0010",
+        $product2_2_2->attributes = ["DEV0010",
                                                         "852931005667",
                                                         "белый",
                                                         "да",
                                                         "УФ-стабилизированный поликарбонат",
                                                         "4.1 x 1.73 x 1.73",
-                                                        "120 грамм"]}';
+                                                        "120 грамм"];
         $product2_2_2->save();
 
         // продукты категории 2 подкатегории 3
@@ -468,7 +468,7 @@ Bluetooth включен для легкого сопряжения с суще�
         $product2_3_1->brand_id = $brand1Id;
         $product2_3_1->amount_left = 87;
         $product2_3_1->price = 14900;
-        $product2_3_1->attributes = '{"attributes": ["813922010251", "белый"]}';
+        $product2_3_1->attributes = ["813922010251", "белый"];
         $product2_3_1->save();
 
         $product2_3_2 = new Product();
@@ -483,7 +483,7 @@ Bluetooth включен для легкого сопряжения с суще�
         $product2_3_2->brand_id = $brand1Id;
         $product2_3_2->amount_left = 87;
         $product2_3_2->price = 2450;
-        $product2_3_2->attributes = '{"attributes": ["718122387014", "белый"]}';
+        $product2_3_2->attributes = ["718122387014", "белый"];
         $product2_3_2->save();
 
         // продукты категории 3 подкатегории 1
@@ -504,14 +504,14 @@ Home/Away Assist - выключается после того, как вы уй�
         $product3_1_1->brand_id = $brand2Id;
         $product3_1_1->amount_left = 87;
         $product3_1_1->price = 56990;
-        $product3_1_1->attributes = '{"attributes": ["T4000ES",
+        $product3_1_1->attributes = ["T4000ES",
                                                         "813917020593",
                                                         "белый",
                                                         "24-бит цветной ЖК-дисплей 320 x 320 разрешение на 182 пикселей на дюйм 1,76 дюйма (4,5 см) диаметр",
                                                         "Температура, Влажность, Близость/Занятость, Окружающий свет",
                                                         "Wi-Fi подключение с доступом в Интернет. Телефон или планшет с iOS 8 или более поздней версией, или Android 4 или поздней бесплатной учетной записью Nest",
                                                         "Английский (США, Великобритания), русский, голландский, французский (Канада, Франция), итальянский, испанский (Северная Америка, Испания)",
-                                                        "Менее 1 кВтч/месяц"]}';
+                                                        "Менее 1 кВтч/месяц"];
         $product3_1_1->save();
 
         $product3_1_2 = new Product();
@@ -525,14 +525,14 @@ Home/Away Assist - выключается после того, как вы уй�
         $product3_1_2->brand_id = $brand1Id;
         $product3_1_2->amount_left = 87;
         $product3_1_2->price = 56990;
-        $product3_1_2->attributes = '{"attributes": ["RTH9585WF1004",
+        $product3_1_2->attributes = ["RTH9585WF1004",
                                                         "085267911313",
                                                         "белый",
                                                         "24-бит цветной ЖК-дисплей 320 x 320 разрешение на 182 пикселей на дюйм 1,76 дюйма (4,5 см) диаметр",
                                                         "Температура, Влажность, Близость/Занятость, Окружающий свет",
                                                         "Wi-Fi подключение с доступом в Интернет. Телефон или планшет с iOS 8 или более поздней версией, или Android 4 или поздней бесплатной учетной записью Nest",
                                                         "Английский (США, Великобритания), русский, голландский, французский (Канада, Франция), итальянский, испанский (Северная Америка, Испания)",
-                                                        "Менее 1 кВтч/месяц"]}';
+                                                        "Менее 1 кВтч/месяц"];
         $product3_1_2->save();
 
         // продукты категории 3 подкатегории 2
@@ -547,12 +547,12 @@ Home/Away Assist - выключается после того, как вы уй�
         $product3_2_1->brand_id = $brand2Id;
         $product3_2_1->amount_left = 76;
         $product3_2_1->price = 56990;
-        $product3_2_1->attributes = '{"attributes": ["EV410C",
+        $product3_2_1->attributes = ["EV410C",
                                                         "683318654709",
                                                         "белый",
                                                         "Delrin PC-ABS полимер и полиоксиметилен",
                                                         "Все канальные системы принудительного воздушного отопления и/или охлаждения: Одноступенчатые/переменноскоростные вентиляторы. Одноступенчатые, двухступенчатые и переменноскоростные печи. Сплит-системы, упакованные блоки и тепловые насосы. Термостаты. Emerson Sensi Термостат продается Ecovent Nest (1-го и 2-го поколения). Радио термостат будет работать без управления термостатом",
-                                                        "11.84 x 5.84 x 2.03"]}';
+                                                        "11.84 x 5.84 x 2.03"];
         $product3_2_1->save();
 
         $product3_2_2 = new Product();
@@ -566,12 +566,12 @@ Home/Away Assist - выключается после того, как вы уй�
         $product3_2_2->brand_id = $brand2Id;
         $product3_2_2->amount_left = 76;
         $product3_2_2->price = 56990;
-        $product3_2_2->attributes = '{"attributes": ["EVHUB",
+        $product3_2_2->attributes = ["EVHUB",
                                                         "683318654648",
                                                         "белый",
                                                         "Главным образом полимер PC-ABS и полиоксиметилен",
                                                         "Термостат Emerson Sensi от Ecovent Nest (1-го и 2-го поколения)",
-                                                        "5.09 x 1.44 x 5.48"]}';
+                                                        "5.09 x 1.44 x 5.48"];
         $product3_2_2->save();
 
         // продукты категории 3 подкатегории 3
@@ -586,7 +586,7 @@ Home/Away Assist - выключается после того, как вы уй�
         $product3_3_1->brand_id = $brand3Id;
         $product3_3_1->amount_left = 76;
         $product3_3_1->price = 26990;
-        $product3_3_1->attributes = '{"attributes": ["627988301129", "белый"]}';
+        $product3_3_1->attributes = ["627988301129", "белый"];
         $product3_3_1->save();
 
         $product3_3_2 = new Product();
@@ -600,7 +600,7 @@ Home/Away Assist - выключается после того, как вы уй�
         $product3_3_2->brand_id = $brand3Id;
         $product3_3_2->amount_left = 45;
         $product3_3_2->price = 38990;
-        $product3_3_2->attributes = '{"attributes": ["683318654617", "белый"]}';
+        $product3_3_2->attributes = ["683318654617", "белый"];
         $product3_3_2->save();
 
         // пользователь
