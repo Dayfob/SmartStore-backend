@@ -15,6 +15,7 @@ Route::group(['prefix' => 'catalog'], function () {
     Route::get('subcategory', [ProductController::class, 'getSubcategoryProducts']);
     Route::get('brand', [ProductController::class, 'getBrandProducts']);
     Route::get('product', [ProductController::class, 'getProduct']);
+
     Route::get('categories', [CategoryController::class, 'getCategories']);
     Route::get('subcategories', [SubcategoryController::class, 'getSubcategories']);
     Route::get('brands', [BrandController::class, 'getBrands']);
