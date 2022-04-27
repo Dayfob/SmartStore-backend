@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\NewsController;
 use App\Http\Controllers\Product\BrandController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\CategoryController;
@@ -18,7 +19,11 @@ Route::group(['prefix' => 'catalog'], function () {
 
     Route::get('categories', [CategoryController::class, 'getCategories']);
     Route::get('subcategories', [SubcategoryController::class, 'getSubcategories']);
+    Route::get('all_subcategories', [SubcategoryController::class, 'getAllSubcategories']);
     Route::get('brands', [BrandController::class, 'getBrands']);
+
+    Route::get('news', [NewsController::class, 'getAllNews']);
+    Route::get('one_news', [NewsController::class, 'getOneNews']);
 //    Route::get('search', [LeftoversController::class, 'searchInWarehouses']);
 //    Route::get('product', [LeftoversController::class, 'getProductByGuid']);
 //    Route::get('crosses', [LeftoversController::class, 'getLaximoCrosses']);

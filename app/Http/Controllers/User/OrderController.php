@@ -27,6 +27,7 @@ class OrderController extends Controller
                 $product->brand_id = $product->brand;
                 $product->category_id = $product->category;
                 $product->subcategory_id = $product->subcategory;
+                $product->image_url = asset('storage/' . $product->image_url);
                 $orderProduct->item_id = $product;
             }
             $data[] = [
@@ -52,6 +53,7 @@ class OrderController extends Controller
             $product->brand_id = $product->brand;
             $product->category_id = $product->category;
             $product->subcategory_id = $product->subcategory;
+            $product->image_url = asset('storage/' . $product->image_url);
             $orderProduct->item_id = $product;
         }
 

@@ -16,6 +16,7 @@ class ProductController extends Controller
             $product->brand_id = $product->brand;
             $product->category_id = $product->category;
             $product->subcategory_id = $product->subcategory;
+            $product->image_url = asset('storage/' . $product->image_url);
         }
 
         return response()->json($products);
@@ -30,6 +31,7 @@ class ProductController extends Controller
             $product->brand_id = $product->brand;
             $product->category_id = $product->category;
             $product->subcategory_id = $product->subcategory;
+            $product->image_url = asset('storage/' . $product->image_url);
         }
 
         return response()->json($products);
@@ -44,6 +46,7 @@ class ProductController extends Controller
             $product->brand_id = $product->brand;
             $product->category_id = $product->category;
             $product->subcategory_id = $product->subcategory;
+            $product->image_url = asset('storage/' . $product->image_url);
         }
 
         return response()->json($products);
@@ -58,6 +61,7 @@ class ProductController extends Controller
             $product->brand_id = $product->brand;
             $product->category_id = $product->category;
             $product->subcategory_id = $product->subcategory;
+            $product->image_url = asset('storage/' . $product->image_url);
         }
 
         return response()->json($products);
@@ -71,6 +75,7 @@ class ProductController extends Controller
         $product->brand_id = $product->brand;
         $product->category_id = $product->category;
         $product->subcategory_id = $product->subcategory;
+        $product->image_url = asset('storage/' . $product->image_url);
 
         return response()->json($product);
     }
