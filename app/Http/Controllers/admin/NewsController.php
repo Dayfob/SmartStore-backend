@@ -12,13 +12,19 @@ class NewsController extends Controller
     public function getAllNews()
     {
         $news = News::all();
+
+        foreach ($news as $onenews){
+            $onenews->image_url = asset('storage/' . $onenews->image_url);
+        }
+
         return response()->json($news);
     }
 
     public function getOneNews(Request $request)
     {
         $newsId = $request->get('news_id');
-        $news = News::whereId($newsId)->get();
+        $news = News::whereId($newsId)->first();
+        $news->image_url = asset('storage/' . $news->image_url);
         return response()->json($news);
     }
 
