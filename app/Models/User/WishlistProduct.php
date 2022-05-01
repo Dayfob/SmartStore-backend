@@ -33,6 +33,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|WishlistProduct whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WishlistProduct whereWishlistId($value)
  * @mixin \Eloquent
+ * @property-read Product|null $product
  */
 class WishlistProduct extends Model
 {

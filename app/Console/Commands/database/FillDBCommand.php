@@ -93,6 +93,7 @@ class FillDBCommand extends Command
                                         "Detection distance",
                                         "Size (H x W x D)",
                                         "Weight"];
+        $subcategory1_1->image_url = 'subcategory_surveillance_icon.jpg';
         $subcategory1_1->save();
         $subcategory1_1Id = ProductSubcategory::whereSlug('cameras_surveillance')->first()->id;
 
@@ -108,6 +109,7 @@ class FillDBCommand extends Command
                                         "Power Requirement",
                                         "Size (H x W x D)",
                                         "Weight"];
+        $subcategory1_2->image_url = 'subcategory_doorbells_icon.jpg';
         $subcategory1_2->save();
         $subcategory1_2Id = ProductSubcategory::whereSlug('cameras_doorbells')->first()->id;
 
@@ -117,6 +119,7 @@ class FillDBCommand extends Command
         $subcategory1_3->slug = 'cameras_accessories';
         $subcategory1_3->description = 'These are accessories.';
         $subcategory1_3->attributes = ["UPC", "Color"];
+        $subcategory1_3->image_url = 'subcategory_cameras_accessories_icon.png';
         $subcategory1_3->save();
         $subcategory1_3Id = ProductSubcategory::whereSlug('cameras_accessories')->first()->id;
 
@@ -127,6 +130,7 @@ class FillDBCommand extends Command
         $subcategory2_1->slug = 'lighting_bulbs';
         $subcategory2_1->description = 'Это лапочки.';
         $subcategory2_1->attributes = ["Product number", "UPC", "Color", "Brightness", "Working lifespan", "Socket", "Power"];
+        $subcategory2_1->image_url = 'subcategory_bulbs_icon.jpg';
         $subcategory2_1->save();
         $subcategory2_1Id = ProductSubcategory::whereSlug('lighting_bulbs')->first()->id;
 
@@ -136,6 +140,7 @@ class FillDBCommand extends Command
         $subcategory2_2->slug = 'lighting_outlets';
         $subcategory2_2->description = 'These are outlets.';
         $subcategory2_2->attributes = ["Product number", "UPC", "Color", "Software", "Material", "Size (H x W x D)", "Weight"];
+        $subcategory2_2->image_url = 'subcategory_outlets_icon.jpg';
         $subcategory2_2->save();
         $subcategory2_2Id = ProductSubcategory::whereSlug('lighting_outlets')->first()->id;
 
@@ -145,6 +150,7 @@ class FillDBCommand extends Command
         $subcategory2_3->slug = 'lighting_accessories';
         $subcategory2_3->description = 'These are accessories.';
         $subcategory2_3->attributes = ["UPC", "Color"];
+        $subcategory2_3->image_url = 'subcategory_lighting_accessories_icon.png';
         $subcategory2_3->save();
         $subcategory2_3Id = ProductSubcategory::whereSlug('lighting_accessories')->first()->id;
 
@@ -156,6 +162,7 @@ class FillDBCommand extends Command
         $subcategory3_1->description = 'These are thermostats.';
         $subcategory3_1->attributes = ["Product number", "UPC", "Color", "Display", "Sensors",
                                         "Connection method", "Languages", "Power consumption"];
+        $subcategory3_1->image_url = 'subcategory_thermostats_icon.png';
         $subcategory3_1->save();
         $subcategory3_1Id = ProductSubcategory::whereSlug('temperature_thermostats')->first()->id;
 
@@ -166,6 +173,7 @@ class FillDBCommand extends Command
         $subcategory3_2->description = 'These are vents.';
         $subcategory3_2->attributes = ["Product number", "UPC", "Color", "Material",
                                         "Compatibility", "Size (H x W x D)"];
+        $subcategory3_2->image_url = 'subcategory_vents_icon.jpg';
         $subcategory3_2->save();
         $subcategory3_2Id = ProductSubcategory::whereSlug('temperature_vents')->first()->id;
 
@@ -175,6 +183,7 @@ class FillDBCommand extends Command
         $subcategory3_3->slug = 'temperature_accessories';
         $subcategory3_3->description = 'These are accessories.';
         $subcategory3_3->attributes = ["UPC", "Color"];
+        $subcategory3_3->image_url = 'subcategory_temperature_accessories_icon.webp';
         $subcategory3_3->save();
         $subcategory3_3Id = ProductSubcategory::whereSlug('temperature_accessories')->first()->id;
 

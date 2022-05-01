@@ -39,6 +39,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $image_url
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductSubcategory whereImageUrl($value)
  */
 class ProductSubcategory extends Model
 {
