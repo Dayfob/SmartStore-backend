@@ -17,7 +17,7 @@ class DeleteTables extends Migration
         Schema::dropIfExists('admin_roles_employers');
         Schema::dropIfExists('admin_roles_permissions');
         Schema::table('product_category_subcategories', function(Blueprint $table) {
-            $table->string('image_url');
+            $table->string('image_url')->nullable();
         });
     }
 
