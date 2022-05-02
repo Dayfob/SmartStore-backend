@@ -18,7 +18,11 @@ class CategoryController extends Controller
             $categoriesResponse->name = $category->name;
             $categoriesResponse->slug = $category->slug;
             $categoriesResponse->description = $category->description;
-            $categoriesResponse->subcategories = $category->subcategories;
+            foreach($category->subcategories as $subcategory){
+                $subcategory->image_url = asset('storage/' . $subcategory->image_url);
+                $subcategories[] = $subcategory;
+            }
+            $categoriesResponse->subcategories = $subcategories;
             $categoriesResponse->created_at = $category->created_at;
             $categoriesResponse->updated_at = $category->updated_at;
             $responseArray[] = $categoriesResponse;

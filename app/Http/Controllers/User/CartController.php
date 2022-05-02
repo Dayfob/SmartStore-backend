@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Product\Product;
 use App\Models\User\CartProduct;
 use App\Models\User\Cart;
+use App\Models\User\Wishlist;
+use App\Models\User\WishlistProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use stdClass;
 
 class CartController extends Controller
 {
@@ -21,11 +24,32 @@ class CartController extends Controller
         $cart->user_id = $cart->user;
         foreach ($cartProducts as $cartProduct){
             $product = Product::whereId($cartProduct->item_id)->first();
-            $product->brand_id = $product->brand;
-            $product->category_id = $product->category;
-            $product->subcategory_id = $product->subcategory;
-            $product->image_url = asset('storage/' . $product->image_url);
-            $cartProduct->item_id = $product;
+
+            $productsResponse = new stdClass();
+            $productsResponse->id = $product->id;
+            $productsResponse->name = $product->name;
+            $productsResponse->slug = $product->slug;
+            $productsResponse->image_url = asset('storage/' . $product->image_url);
+            $productsResponse->description = $product->description;
+            $productsResponse->brand_id = $product->brand;
+            $productsResponse->category_id = $product->category;
+            $productsResponse->subcategory_id = $product->subcategory;
+            $productsResponse->amount_left = $product->amount_left;
+            $productsResponse->price = $product->price;
+            $productsResponse->attributes = $product->attributes;
+            $productsResponse->liked = false;
+
+            if($user = Auth::user()){
+                $wishlist = Wishlist::whereUserId($user->id)->first();
+                $wishlistProducts = WishlistProduct::whereWishlistId($wishlist->id)->get();
+                foreach ($wishlistProducts as $wishlistProduct){
+                    if ($wishlistProduct->item_id === $product->id){
+                        $productsResponse->liked = true;
+                    }
+                }
+            }
+
+            $cartProduct->item_id = $productsResponse;
         }
 
         $data = [

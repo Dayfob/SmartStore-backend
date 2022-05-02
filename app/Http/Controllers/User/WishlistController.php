@@ -8,6 +8,7 @@ use App\Models\User\Wishlist;
 use App\Models\User\WishlistProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use stdClass;
 
 class WishlistController extends Controller
 {
@@ -22,11 +23,22 @@ class WishlistController extends Controller
         foreach ($wishlistProducts as $wishlistProduct){
             $wishlistProductId = $wishlistProduct->item_id;
             $product = Product::whereId($wishlistProductId)->first();
-            $product->brand_id = $product->brand;
-            $product->category_id = $product->category;
-            $product->subcategory_id = $product->subcategory;
-            $product->image_url = asset('storage/' . $product->image_url);
-            $wishlistProduct->item_id = $product;
+
+            $productsResponse = new stdClass();
+            $productsResponse->id = $product->id;
+            $productsResponse->name = $product->name;
+            $productsResponse->slug = $product->slug;
+            $productsResponse->image_url = asset('storage/' . $product->image_url);
+            $productsResponse->description = $product->description;
+            $productsResponse->brand_id = $product->brand;
+            $productsResponse->category_id = $product->category;
+            $productsResponse->subcategory_id = $product->subcategory;
+            $productsResponse->amount_left = $product->amount_left;
+            $productsResponse->price = $product->price;
+            $productsResponse->attributes = $product->attributes;
+            $productsResponse->liked = true;
+
+            $wishlistProduct->item_id = $productsResponse;
         }
 
         $data = [

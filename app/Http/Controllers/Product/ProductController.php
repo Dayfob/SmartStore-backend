@@ -16,7 +16,7 @@ class ProductController extends Controller
     {
         $products = Product::all();
 
-        foreach ($products as $product){
+        foreach ($products as $product) {
             $productsResponse = new stdClass();
             $productsResponse->id = $product->id;
             $productsResponse->name = $product->name;
@@ -31,11 +31,11 @@ class ProductController extends Controller
             $productsResponse->attributes = $product->attributes;
             $productsResponse->liked = false;
 
-            if($user = Auth::user()){
+            if ($user = Auth::user()) { // это не работает из-за отсутствия middleware sanctum в маршрутах
                 $wishlist = Wishlist::whereUserId($user->id)->first();
                 $wishlistProducts = WishlistProduct::whereWishlistId($wishlist->id)->get();
-                foreach ($wishlistProducts as $wishlistProduct){
-                    if ($wishlistProduct->item_id === $product->id){
+                foreach ($wishlistProducts as $wishlistProduct) {
+                    if ($wishlistProduct->item_id === $product->id) {
                         $productsResponse->liked = true;
                     }
                 }
@@ -51,7 +51,7 @@ class ProductController extends Controller
         $categoryId = $request->input('category_id');
         $products = Product::whereCategoryId($categoryId)->get();
 
-        foreach ($products as $product){
+        foreach ($products as $product) {
             $productsResponse = new stdClass();
             $productsResponse->id = $product->id;
             $productsResponse->name = $product->name;
@@ -66,11 +66,11 @@ class ProductController extends Controller
             $productsResponse->attributes = $product->attributes;
             $productsResponse->liked = false;
 
-            if($user = Auth::user()){
+            if ($user = Auth::user()) {
                 $wishlist = Wishlist::whereUserId($user->id)->first();
                 $wishlistProducts = WishlistProduct::whereWishlistId($wishlist->id)->get();
-                foreach ($wishlistProducts as $wishlistProduct){
-                    if ($wishlistProduct->item_id === $product->id){
+                foreach ($wishlistProducts as $wishlistProduct) {
+                    if ($wishlistProduct->item_id === $product->id) {
                         $productsResponse->liked = true;
                     }
                 }
@@ -86,7 +86,7 @@ class ProductController extends Controller
         $subcategoryId = $request->input('subcategory_id');
         $products = Product::whereSubcategoryId($subcategoryId)->get();
 
-        foreach ($products as $product){
+        foreach ($products as $product) {
             $productsResponse = new stdClass();
             $productsResponse->id = $product->id;
             $productsResponse->name = $product->name;
@@ -101,11 +101,11 @@ class ProductController extends Controller
             $productsResponse->attributes = $product->attributes;
             $productsResponse->liked = false;
 
-            if($user = Auth::user()){
+            if ($user = Auth::user()) {
                 $wishlist = Wishlist::whereUserId($user->id)->first();
                 $wishlistProducts = WishlistProduct::whereWishlistId($wishlist->id)->get();
-                foreach ($wishlistProducts as $wishlistProduct){
-                    if ($wishlistProduct->item_id === $product->id){
+                foreach ($wishlistProducts as $wishlistProduct) {
+                    if ($wishlistProduct->item_id === $product->id) {
                         $productsResponse->liked = true;
                     }
                 }
@@ -121,7 +121,7 @@ class ProductController extends Controller
         $brandId = $request->input('brand_id');
         $products = Product::whereBrandId($brandId)->get();
 
-        foreach ($products as $product){
+        foreach ($products as $product) {
             $productsResponse = new stdClass();
             $productsResponse->id = $product->id;
             $productsResponse->name = $product->name;
@@ -136,11 +136,11 @@ class ProductController extends Controller
             $productsResponse->attributes = $product->attributes;
             $productsResponse->liked = false;
 
-            if($user = Auth::user()){
+            if ($user = Auth::user()) {
                 $wishlist = Wishlist::whereUserId($user->id)->first();
                 $wishlistProducts = WishlistProduct::whereWishlistId($wishlist->id)->get();
-                foreach ($wishlistProducts as $wishlistProduct){
-                    if ($wishlistProduct->item_id === $product->id){
+                foreach ($wishlistProducts as $wishlistProduct) {
+                    if ($wishlistProduct->item_id === $product->id) {
                         $productsResponse->liked = true;
                     }
                 }
@@ -170,11 +170,11 @@ class ProductController extends Controller
         $productsResponse->attributes = $product->attributes;
         $productsResponse->liked = false;
 
-        if($user = Auth::user()){
+        if ($user = Auth::user()) {
             $wishlist = Wishlist::whereUserId($user->id)->first();
             $wishlistProducts = WishlistProduct::whereWishlistId($wishlist->id)->get();
-            foreach ($wishlistProducts as $wishlistProduct){
-                if ($wishlistProduct->item_id === $product->id){
+            foreach ($wishlistProducts as $wishlistProduct) {
+                if ($wishlistProduct->item_id === $product->id) {
                     $productsResponse->liked = true;
                 }
             }

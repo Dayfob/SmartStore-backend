@@ -15,6 +15,7 @@ class SubcategoryController extends Controller
         $subcategories = ProductSubcategory::whereCategoryId($subcategoryId)->get();
         foreach ($subcategories as $subcategory){
             $subcategory->category_id = $subcategory->category;
+            $subcategory->image_url = asset('storage/' . $subcategory->image_url);
         }
         return response()->json($subcategories);
     }
@@ -24,6 +25,7 @@ class SubcategoryController extends Controller
         $subcategories = ProductSubcategory::all();
         foreach ($subcategories as $subcategory){
             $subcategory->category_id = $subcategory->category;
+            $subcategory->image_url = asset('storage/' . $subcategory->image_url);
         }
         return response()->json($subcategories);
     }
