@@ -22,7 +22,7 @@ class CartController extends Controller
         $cartProducts = CartProduct::whereCartId($cart->id)->get();
 
         $cart->user_id = $cart->user;
-        foreach ($cartProducts as $cartProduct){
+        foreach ($cartProducts as $cartProduct) {
             $product = Product::whereId($cartProduct->item_id)->first();
 
             $productsResponse = new stdClass();
@@ -39,11 +39,11 @@ class CartController extends Controller
             $productsResponse->attributes = $product->attributes;
             $productsResponse->liked = false;
 
-            if($user = Auth::user()){
+            if ($user = Auth::user()) {
                 $wishlist = Wishlist::whereUserId($user->id)->first();
                 $wishlistProducts = WishlistProduct::whereWishlistId($wishlist->id)->get();
-                foreach ($wishlistProducts as $wishlistProduct){
-                    if ($wishlistProduct->item_id === $product->id){
+                foreach ($wishlistProducts as $wishlistProduct) {
+                    if ($wishlistProduct->item_id === $product->id) {
                         $productsResponse->liked = true;
                     }
                 }
@@ -71,10 +71,13 @@ class CartController extends Controller
         $cartProduct->item_id = $item_id;
         $cartProduct->item_amount = $item_amount;
         $cartProduct->save();
-        if ($cartProduct->save()) {
+
+        $product = Product::whereId($cartProduct->item_id)->first();
+        $cart->total_price = $cart->total_price + $product->price * $item_amount;
+
+        if ($cartProduct->save() && $cart->save()) {
             return response()->json($cartProduct);
         }
-
         return response()->json()->isServerError();
     }
 
@@ -85,9 +88,13 @@ class CartController extends Controller
         $item_id = $request->get("item_id");
         $item_amount = $request->get("item_amount");
 
-        $cartProduct = CartProduct::where('cart_id', $cart->id)->where('item_id', $item_id)->first();
+        $cartProduct = CartProduct::where('cart_id', $cart->id)->where('item_id', $item_id)->get()->first();
+        $product = Product::whereId($cartProduct->item_id)->first();
+
+        $cart->total_price = $cart->total_price - $product->price * $cartProduct->item_amount + $product->price * $item_amount;
         $cartProduct->item_amount = $item_amount;
-        if ($cartProduct->save()){
+
+        if ($cartProduct->save() && $cart->save()) {
             return response()->json($cartProduct);
         }
         return response()->json()->isServerError();
@@ -99,9 +106,15 @@ class CartController extends Controller
         $cart = Cart::whereUserId($user->id)->first();
         $item_id = $request->get("item_id");
 
-       if (CartProduct::where('cart_id', $cart->id)->where('item_id', $item_id)->delete()){
-           return response()->json()->isSuccessful();
-       }
-       return response()->json()->isServerError();
+        $cartProduct = CartProduct::where('cart_id', $cart->id)->where('item_id', $item_id)->first();
+
+        $product = Product::whereId($cartProduct->item_id)->first();
+        $cart->total_price = $cart->total_price - $product->price * $cartProduct->item_amount;
+
+        if($cartProduct->delete() && $cart->save()){
+            return response()->json()->isSuccessful();
+        }
+
+        return response()->json()->isServerError();
     }
 }
