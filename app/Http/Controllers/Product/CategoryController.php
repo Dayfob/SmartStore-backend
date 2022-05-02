@@ -14,6 +14,7 @@ class CategoryController extends Controller
         $categories = ProductCategory::all();
         foreach($categories as $category){
             $categoriesResponse = new stdClass();
+            $subcategories = [];
             $categoriesResponse->id = $category->id;
             $categoriesResponse->name = $category->name;
             $categoriesResponse->slug = $category->slug;
