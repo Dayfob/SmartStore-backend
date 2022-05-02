@@ -83,10 +83,10 @@ class UserController extends Controller
     public function updateUserData(Request $request) // надо проверить работоспособность
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:user_users',
-            'phone' => 'required',
-            'iin' => 'required|string'
+            'name' => 'string',
+            'email' => 'email|unique:user_users',
+            'phone' => 'string',
+            'iin' => 'string'
         ]);
 
         if ($validator->fails()) {
@@ -98,10 +98,18 @@ class UserController extends Controller
         $user = User::whereId($userId)
             ->get()->first();
 
-        $user->name = $request->get("name");
-        $user->email = $request->get("email");
-        $user->phone_number = $request->get("phone");
-        $user->iin = $request->get("iin");
+        if ($request->exists("name")){
+            $user->name = $request->get("name");
+        }
+        if ($request->exists("email")){
+            $user->email = $request->get("email");
+        }
+        if ($request->exists("phone")){
+            $user->phone_number = $request->get("phone");
+        }
+        if ($request->exists("iin")){
+            $user->iin = $request->get("iin");
+        }
 
         if ($user->save()) {
             return response()->json(['message' => 'Данные успешно обновлены']);
