@@ -112,7 +112,7 @@ class CartController extends Controller
         $cart->total_price = $cart->total_price - $product->price * $cartProduct->item_amount;
 
         if($cartProduct->delete() && $cart->save()){
-            return response()->json()->isSuccessful();
+            return response()->json("Successful response");
         }
 
         return response()->json()->isServerError();

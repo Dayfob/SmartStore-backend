@@ -72,7 +72,7 @@ class WishlistController extends Controller
         $item_id = $request->get("item_id");
 
         if (WishlistProduct::where('wishlist_id', $wishlist->id)->where('item_id', $item_id)->delete()){
-            return response()->json()->isSuccessful();
+            return response()->json("Successful response");
         }
         return response()->json()->isServerError();
     }
