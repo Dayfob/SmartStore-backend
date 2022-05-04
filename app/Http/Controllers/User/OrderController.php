@@ -22,7 +22,7 @@ class OrderController extends Controller
         foreach ($orders as $order) {
             $order->user_id = $order->user;
             $orderProducts = OrderProduct::whereOrderId($order->id)->get();
-            foreach ($orderProducts as $orderProduct){
+            foreach ($orderProducts as $orderProduct) {
                 $product = Product::whereId($orderProduct->item_id)->first();
                 $product->brand_id = $product->brand;
                 $product->category_id = $product->category;
@@ -48,7 +48,7 @@ class OrderController extends Controller
 
         $orderProducts = OrderProduct::whereOrderId($order->id)->get();
 
-        foreach ($orderProducts as $orderProduct){
+        foreach ($orderProducts as $orderProduct) {
             $product = Product::whereId($orderProduct->item_id)->first();
             $product->brand_id = $product->brand;
             $product->category_id = $product->category;
@@ -67,11 +67,16 @@ class OrderController extends Controller
     public function createOrder(Request $request)
     {
         $user = Auth::user();
+//        $stripeCustomer = $user->createOrGetStripeCustomer();
+//        updateStripeCustomer($options);
+//        dd($stripeCustomer);
         $delivery_method = $request->get("delivery_method");
         $payment_method = $request->get("payment_method");
-        $additional_information = $request->get("additional_information");
+        if ($request->exists("additional_information")) {
+            $additional_information = $request->get("additional_information");
+        }
 
-        if ($delivery_method === "доставка по адресу") {
+        if ($delivery_method === "Delivery to address") {
             $address = $request->get("address");
             $delivery_price = 1000;
         } else {
@@ -83,7 +88,7 @@ class OrderController extends Controller
         $cartProducts = CartProduct::whereCartId($cart->id)->get();
 
         $order = new Order();
-        $order->status = "Ожидает подтверждения";
+        $order->status = "Waiting for confirmation";
         $order->user_id = $user->id;
         $order->total_price = $cart->total_price + $delivery_price;
         $order->payment_method = $payment_method;
@@ -99,10 +104,17 @@ class OrderController extends Controller
                 $orderProduct->item_amount = $cartProduct->item_amount;
                 $orderProduct->save();
             }
+            $cart->total_price = 0;
+            $cart->save();
+            CartProduct::whereCartId($cart->id)->delete();
             return response()->json($order);
         }
         return response()->json()->isServerError();
     }
+
+//    public function updateOrder(Request $request){
+//
+//    }
 
     public function deleteOrder(Request $request)
     {
