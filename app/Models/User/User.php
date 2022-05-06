@@ -6,6 +6,7 @@ use App\Models\Admin\AdminRoleEmployer;
 use App\Models\Order\Order;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use function Illuminate\Events\queueable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
@@ -119,5 +120,18 @@ class User extends Authenticatable
     public function image(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(UserImage::class, 'user_id', 'id');
+    }
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::updated(queueable(function ($customer) {
+            if ($customer->hasStripeId()) {
+                $customer->syncStripeCustomerDetails();
+            }
+        }));
     }
 }

@@ -10,6 +10,13 @@ use App\Models\User\Cart;
 use App\Models\User\CartProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Stripe\EphemeralKey;
+use Stripe\Exception\ApiErrorException;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
+
+// This is your test secret API key.
+Stripe::setApiKey('sk_test_51KvcFqIwdOpAH80orZnTKwfhrww10bFcNdvW5QXe50PzHpBf7odkLcgJ41qBOvzHnSzOM612bkhWcCRKSBoRynFt00RK7x0ssO');
 
 class OrderController extends Controller
 {
@@ -64,17 +71,17 @@ class OrderController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * @throws ApiErrorException
+     */
     public function createOrder(Request $request)
     {
         $user = Auth::user();
-//        $stripeCustomer = $user->createOrGetStripeCustomer();
+        $stripeCustomer = $user->createOrGetStripeCustomer();
 //        updateStripeCustomer($options);
 //        dd($stripeCustomer);
         $delivery_method = $request->get("delivery_method");
         $payment_method = $request->get("payment_method");
-        if ($request->exists("additional_information")) {
-            $additional_information = $request->get("additional_information");
-        }
 
         if ($delivery_method === "Delivery to address") {
             $address = $request->get("address");
@@ -94,7 +101,9 @@ class OrderController extends Controller
         $order->payment_method = $payment_method;
         $order->delivery_method = $delivery_method;
         $order->address = $address;
-        $order->additional_information = $additional_information;
+        if ($request->has("additional_information")) {
+            $order->additional_information = $request->get("additional_information");
+        }
         $order->delivery_price = $delivery_price;
         if ($order->save()) {
             foreach ($cartProducts as $cartProduct) {
@@ -107,7 +116,31 @@ class OrderController extends Controller
             $cart->total_price = 0;
             $cart->save();
             CartProduct::whereCartId($cart->id)->delete();
-            return response()->json($order);
+
+            $ephemeralKey = EphemeralKey::create(
+                [
+                    'customer' => $stripeCustomer->id,
+                ],
+                [
+                    'stripe_version' => '2020-08-27',
+                ]);
+
+            // Create a PaymentIntent with amount and currency
+            $paymentIntent = PaymentIntent::create([
+                'amount' => $order->total_price,
+                'currency' => 'kzt',
+                'automatic_payment_methods' => [
+                    'enabled' => true,
+                ],
+            ]);
+
+            $data = [
+                'clientSecret' => $paymentIntent->client_secret,
+                'clientEphemeral' => $ephemeralKey,
+                'order' => $order,
+            ];
+
+            return response()->json($data);
         }
         return response()->json()->isServerError();
     }
@@ -128,6 +161,40 @@ class OrderController extends Controller
             return response()->json($order);
         }
         return response()->json()->isServerError();
+    }
+
+    /**
+     * @throws ApiErrorException
+     */
+    public function createPaymentIntent($order_id)
+    {
+        $user = Auth::user();
+        $order = Order::whereId($order_id)->first();
+
+        // Create a PaymentIntent with amount and currency
+        $ephemeralKey = EphemeralKey::create(
+            [
+                'customer' => $user->id,
+            ],
+            [
+                'stripe_version' => '2020-08-27',
+            ]);
+
+        $paymentIntent = PaymentIntent::create([
+            'amount' => $order->total_price,
+            'currency' => 'kzt',
+            'customer' => $user->id,
+            'automatic_payment_methods' => [
+                'enabled' => true,
+            ],
+        ]);
+
+        $output = [
+            'clientSecret' => $paymentIntent->client_secret,
+            'clientEphemeral' => $ephemeralKey,
+        ];
+
+        return response()->json($output);
     }
 
 }
