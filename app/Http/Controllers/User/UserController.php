@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\User\Cart;
 use App\Models\User\User;
+use App\Models\User\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -39,6 +41,19 @@ class UserController extends Controller
         ]);
 
         if ($user->save()) {
+            $stripeCustomer = $user->createOrGetStripeCustomer();
+            // корзина
+            $cart = new Cart();
+            $cart->status = '-';
+            $cart->user_id = $user->id;
+            $cart->total_price = 0;
+            $cart->save();
+
+            // список желаний
+            $wishlist = new Wishlist();
+            $wishlist->status = '-';
+            $wishlist->user_id = $user->id;
+            $wishlist->save();
             $token = $user->createToken($request->device_name)->plainTextToken;
             return response()->json(['token' => $token], 200);
         }
