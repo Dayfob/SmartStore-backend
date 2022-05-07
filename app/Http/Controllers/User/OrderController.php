@@ -78,8 +78,6 @@ class OrderController extends Controller
     {
         $user = Auth::user();
         $stripeCustomer = $user->createOrGetStripeCustomer();
-//        updateStripeCustomer($options);
-//        dd($stripeCustomer);
         $delivery_method = $request->get("delivery_method");
         $payment_method = $request->get("payment_method");
 
@@ -119,7 +117,7 @@ class OrderController extends Controller
 
             $ephemeralKey = EphemeralKey::create(
                 [
-                    'customer' => $stripeCustomer->id,
+                    'customer' => $user->stripe_id,
                 ],
                 [
                     'stripe_version' => '2020-08-27',
@@ -129,12 +127,15 @@ class OrderController extends Controller
             $paymentIntent = PaymentIntent::create([
                 'amount' => $order->total_price,
                 'currency' => 'kzt',
+                'customer' => $user->stripe_id,
+                'receipt_email' => $user->email,
                 'automatic_payment_methods' => [
-                    'enabled' => true,
+                    'enabled' => 'true',
                 ],
             ]);
 
             $data = [
+                'client_id' => $user->stripe_id,
                 'clientSecret' => $paymentIntent->client_secret,
                 'clientEphemeral' => $ephemeralKey,
                 'order' => $order,
