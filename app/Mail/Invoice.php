@@ -18,21 +18,15 @@ class Invoice extends Mailable
      * @var Order
      */
     protected $order;
-    /**
-     * The order instance.
-     *
-     * @var string
-     */
-    protected $invoice;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Order $order, string $invoice)
+    public function __construct(Order $order)
     {
         $this->order = $order;
-        $this->invoice = $invoice;
     }
 
     /**

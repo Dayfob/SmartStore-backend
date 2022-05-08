@@ -38,7 +38,6 @@ Route::group(['prefix' => 'user'], function () {
             Route::post('create_order', [OrderController::class, 'createOrder']);
 //            Route::post('update_order', [OrderController::class, 'updateOrder']);
             Route::post('delete_order', [OrderController::class, 'deleteOrder']);
-//            Route::post('create_payment_intent', [OrderController::class, 'createPaymentIntent']);
             Route::post('invoices', [OrderController::class, 'sendInvoice']);
         });
 

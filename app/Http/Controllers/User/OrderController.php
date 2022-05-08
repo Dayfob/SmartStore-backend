@@ -12,6 +12,7 @@ use App\Models\User\CartProduct;
 use App\Models\User\User;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Stripe\EphemeralKey;
@@ -115,37 +116,44 @@ class OrderController extends Controller
                 $orderProduct->item_amount = $cartProduct->item_amount;
                 $orderProduct->save();
             }
+
+
+            if ($payment_method === "Card payment"){
+                $ephemeralKey = EphemeralKey::create(
+                    [
+                        'customer' => $user->stripe_id,
+                    ],
+                    [
+                        'stripe_version' => '2020-08-27',
+                    ]);
+
+                // Create a PaymentIntent with amount and currency
+                $paymentIntent = PaymentIntent::create([
+                    'amount' => $order->total_price,
+                    'currency' => 'kzt',
+                    'customer' => $user->stripe_id,
+                    'receipt_email' => $user->email,
+                    'automatic_payment_methods' => [
+                        'enabled' => 'true',
+                    ],
+                ]);
+
+                $data = [
+                    'client_id' => $user->stripe_id,
+                    'clientSecret' => $paymentIntent->client_secret,
+                    'clientEphemeral' => $ephemeralKey,
+                    'order' => $order,
+                ];
+
+                return response()->json($data);
+            }
+
             $cart->total_price = 0;
             $cart->save();
             CartProduct::whereCartId($cart->id)->delete();
 
-            $ephemeralKey = EphemeralKey::create(
-                [
-                    'customer' => $user->stripe_id,
-                ],
-                [
-                    'stripe_version' => '2020-08-27',
-                ]);
+            return response()->json($order);
 
-            // Create a PaymentIntent with amount and currency
-            $paymentIntent = PaymentIntent::create([
-                'amount' => $order->total_price,
-                'currency' => 'kzt',
-                'customer' => $user->stripe_id,
-                'receipt_email' => $user->email,
-                'automatic_payment_methods' => [
-                    'enabled' => 'true',
-                ],
-            ]);
-
-            $data = [
-                'client_id' => $user->stripe_id,
-                'clientSecret' => $paymentIntent->client_secret,
-                'clientEphemeral' => $ephemeralKey,
-                'order' => $order,
-            ];
-
-            return response()->json($data);
         }
         return response()->json()->isServerError();
     }
@@ -208,15 +216,17 @@ class OrderController extends Controller
         $user = Auth::user();
         $order_id = $request->get("order_id");
 
-        $invoice = "hello";
-
         $order = Order::whereId($order_id)->first();
-//        $order->is_paid = 1;
-//        $order->status = "has been paid";
-//        $order->save();
+        $order->is_paid = 1;
+        $order->status = "has been paid";
+        $order->save();
 
+        $cart = Cart::whereUserId($user->id)->first();
+        $cart->total_price = 0;
+        $cart->save();
+        CartProduct::whereCartId($cart->id)->delete();
 
-        Mail::to($user->email)->send(new Invoice($order, $invoice));
+        Mail::to($user->email)->send(new Invoice($order));
     }
 
     public function generateInvoicePDF(Order $order): \Illuminate\Http\Response
