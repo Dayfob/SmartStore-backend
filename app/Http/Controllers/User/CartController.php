@@ -19,7 +19,7 @@ class CartController extends Controller
         $user = Auth::user();
 
         $cart = Cart::whereUserId($user->id)->first();
-        $cartProducts = CartProduct::whereCartId($cart->id)->get();
+        $cartProducts = CartProduct::whereCartId($cart->id)->orderBy('created_at', 'DESC')->get();
 
         $cart->user_id = $cart->user;
         foreach ($cartProducts as $cartProduct) {

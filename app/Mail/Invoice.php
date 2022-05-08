@@ -50,8 +50,6 @@ class Invoice extends Mailable
             'totalPrice' => $this->order->total_price,
             'address' => $this->order->address,
             'additionalInformation' => $this->order->additional_information,
-//        ])->attach('/path/to/file', ['as' => "invoice.pdf"]);
-//        ])->attachFromStorage('/path/to/file', 'name.pdf', ['as' => "invoice.pdf"]); // что будет работать?
         ])->attachData($this->pdf, 'smart-store-order-no-' . $this->order->id . '.pdf');
     }
 }

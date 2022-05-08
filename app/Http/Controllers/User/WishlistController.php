@@ -17,7 +17,7 @@ class WishlistController extends Controller
         $user = Auth::user();
 
         $wishlist = Wishlist::whereUserId($user->id)->first();
-        $wishlistProducts = WishlistProduct::whereWishlistId($wishlist->id)->get();
+        $wishlistProducts = WishlistProduct::whereWishlistId($wishlist->id)->orderBy('created_at', 'DESC')->get();
 
         $wishlist->user_id = $wishlist->user;
         foreach ($wishlistProducts as $wishlistProduct){

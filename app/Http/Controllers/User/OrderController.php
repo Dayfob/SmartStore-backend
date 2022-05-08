@@ -9,11 +9,8 @@ use App\Models\Order\OrderProduct;
 use App\Models\Product\Product;
 use App\Models\User\Cart;
 use App\Models\User\CartProduct;
-use App\Models\User\User;
 use App\Service\OrderService;
-use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Stripe\EphemeralKey;
@@ -30,7 +27,7 @@ class OrderController extends Controller
     {
         $user = Auth::user();
 
-        $orders = Order::whereUserId($user->id)->get();
+        $orders = Order::whereUserId($user->id)->orderBy('created_at', 'DESC')->get();
 
         foreach ($orders as $order) {
             $order->user_id = $order->user;
@@ -231,6 +228,8 @@ class OrderController extends Controller
         CartProduct::whereCartId($cart->id)->delete();
 
         Mail::to($user->email)->send(new Invoice($order, $pdf));
+
+        return response()->json("Successful response");
     }
 
 }
