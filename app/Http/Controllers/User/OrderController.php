@@ -222,12 +222,15 @@ class OrderController extends Controller
         $order->status = "has been paid";
         $order->save();
 
+        $orderService = new OrderService();
+        $pdf = $orderService->generateInvoicePDF($order);
+
         $cart = Cart::whereUserId($user->id)->first();
         $cart->total_price = 0;
         $cart->save();
         CartProduct::whereCartId($cart->id)->delete();
 
-        Mail::to($user->email)->send(new Invoice($order, $invoice, $pdf));
+        Mail::to($user->email)->send(new Invoice($order, $pdf));
     }
 
 }
