@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
+    'default' => env('MAIL_MAILER', 'failover'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,6 +55,7 @@ return [
 
         'postmark' => [
             'transport' => 'postmark',
+            'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
         ],
 
         'sendmail' => [
@@ -74,6 +75,9 @@ return [
         'failover' => [
             'transport' => 'failover',
             'mailers' => [
+                'postmark',
+                'mailgun',
+                'sendmail',
                 'smtp',
                 'log',
             ],
@@ -92,8 +96,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'smartstore.asnk@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'Smart Store'),
     ],
 
     /*

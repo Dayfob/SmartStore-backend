@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Invoice;
 use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
 use App\Models\Product\Product;
@@ -10,6 +11,7 @@ use App\Models\User\Cart;
 use App\Models\User\CartProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Stripe\EphemeralKey;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
@@ -188,6 +190,7 @@ class OrderController extends Controller
             'automatic_payment_methods' => [
                 'enabled' => true,
             ],
+            'receipt_email' => $user->email,
         ]);
 
         $output = [
@@ -196,6 +199,22 @@ class OrderController extends Controller
         ];
 
         return response()->json($output);
+    }
+
+    public function sendInvoice(Request $request)
+    {
+        $user = Auth::user();
+        $order_id = $request->get("order_id");
+
+        $invoice = "hello";
+
+        $order = Order::whereId($order_id)->first();
+//        $order->is_paid = 1;
+//        $order->status = "has been paid";
+//        $order->save();
+
+
+        Mail::to($user->email)->send(new Invoice($order, $invoice));
     }
 
 }
