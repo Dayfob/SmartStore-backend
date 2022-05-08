@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use App\Http\Controllers\User\OrderController;
 use App\Models\Order\Order;
+use App\Service\OrderService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -18,15 +19,22 @@ class Invoice extends Mailable
      * @var Order
      */
     protected $order;
+    /**
+     * The order instance.
+     *
+     * @var string
+     */
+    protected $pdf;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, $pdf)
     {
         $this->order = $order;
+        $this->pdf = $pdf;
     }
 
     /**
@@ -44,11 +52,6 @@ class Invoice extends Mailable
             'additionalInformation' => $this->order->additional_information,
 //        ])->attach('/path/to/file', ['as' => "invoice.pdf"]);
 //        ])->attachFromStorage('/path/to/file', 'name.pdf', ['as' => "invoice.pdf"]); // что будет работать?
-        ])->attachData($this->getPDF($this->order), 'smart-store-order-no-' . $this->order->id);
-    }
-
-    private function getPDF(Order $order)
-    {
-        return OrderController::class->generateInvoicePDF($order);
+        ])->attachData($this->pdf, 'smart-store-order-no-' . $this->order->id . '.pdf');
     }
 }

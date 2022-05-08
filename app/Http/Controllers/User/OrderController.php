@@ -10,6 +10,7 @@ use App\Models\Product\Product;
 use App\Models\User\Cart;
 use App\Models\User\CartProduct;
 use App\Models\User\User;
+use App\Service\OrderService;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -127,16 +128,16 @@ class OrderController extends Controller
                         'stripe_version' => '2020-08-27',
                     ]);
 
-                // Create a PaymentIntent with amount and currency
-                $paymentIntent = PaymentIntent::create([
-                    'amount' => $order->total_price,
-                    'currency' => 'kzt',
-                    'customer' => $user->stripe_id,
-                    'receipt_email' => $user->email,
-                    'automatic_payment_methods' => [
-                        'enabled' => 'true',
-                    ],
-                ]);
+            // Create a PaymentIntent with amount and currency
+            $paymentIntent = PaymentIntent::create([
+                'amount' => $order->total_price * 100,
+                'currency' => 'kzt',
+                'customer' => $user->stripe_id,
+                'receipt_email' => $user->email,
+                'automatic_payment_methods' => [
+                    'enabled' => 'true',
+                ],
+            ]);
 
                 $data = [
                     'client_id' => $user->stripe_id,
@@ -226,26 +227,7 @@ class OrderController extends Controller
         $cart->save();
         CartProduct::whereCartId($cart->id)->delete();
 
-        Mail::to($user->email)->send(new Invoice($order));
-    }
-
-    public function generateInvoicePDF(Order $order): \Illuminate\Http\Response
-    {
-        $user = User::whereId($order->user_id)->first();
-        $orderProducts = OrderProduct::whereOrderId($order->id)->with('products')->toArray();
-
-        $data = [
-            'title' => 'Smart Store Order #' . $order->id . ' ' . $user->name,
-            'date' => date('d/m/Y'),
-            'user' => $user,
-            'order' => $order,
-            'orderProducts' => $orderProducts,
-        ];
-
-//        $pdf = PDF::loadView('invoice', $data);
-        $pdf = new PDF::class;
-
-        return $pdf->stream('smart-store-order-no-' . $order->id);
+        Mail::to($user->email)->send(new Invoice($order, $invoice, $pdf));
     }
 
 }
