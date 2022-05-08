@@ -9,6 +9,8 @@ use App\Models\Order\OrderProduct;
 use App\Models\Product\Product;
 use App\Models\User\Cart;
 use App\Models\User\CartProduct;
+use App\Models\User\User;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -215,6 +217,25 @@ class OrderController extends Controller
 
 
         Mail::to($user->email)->send(new Invoice($order, $invoice));
+    }
+
+    public function generateInvoicePDF(Order $order): \Illuminate\Http\Response
+    {
+        $user = User::whereId($order->user_id)->first();
+        $orderProducts = OrderProduct::whereOrderId($order->id)->with('products')->toArray();
+
+        $data = [
+            'title' => 'Smart Store Order #' . $order->id . ' ' . $user->name,
+            'date' => date('d/m/Y'),
+            'user' => $user,
+            'order' => $order,
+            'orderProducts' => $orderProducts,
+        ];
+
+//        $pdf = PDF::loadView('invoice', $data);
+        $pdf = new PDF::class;
+
+        return $pdf->stream('smart-store-order-no-' . $order->id);
     }
 
 }
