@@ -66,10 +66,15 @@ class CartController extends Controller
         $item_id = $request->get("item_id");
         $item_amount = $request->get("item_amount");
 
-        $cartProduct = new CartProduct();
-        $cartProduct->cart_id = $cart->id;
-        $cartProduct->item_id = $item_id;
-        $cartProduct->item_amount = $item_amount;
+        if (CartProduct::where("cart_id", $cart->id)->where("item_id", $item_id)->first()){
+            $cartProduct = CartProduct::where("cart_id", $cart->id)->where("item_id", $item_id)->first();
+            $cartProduct->item_amount += $item_amount;
+        } else {
+            $cartProduct = new CartProduct();
+            $cartProduct->cart_id = $cart->id;
+            $cartProduct->item_id = $item_id;
+            $cartProduct->item_amount = $item_amount;
+        }
         $cartProduct->save();
 
         $product = Product::whereId($cartProduct->item_id)->first();
