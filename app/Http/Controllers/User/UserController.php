@@ -31,7 +31,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => 'Ошибка валидации']);
+            return response()->json(['message' => 'Validation error']);
         }
 
         $user = new User([
@@ -58,7 +58,7 @@ class UserController extends Controller
             return response()->json(['token' => $token], 200);
         }
 
-        return response()->json(['message' => 'Ошибка']);
+        return response()->json(['message' => 'Error']);
     }
 
     public function login(Request $request)
@@ -70,7 +70,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => 'Ошибка валидации']);
+            return response()->json(['message' => 'Validation error']);
         }
 
         $userEmail = $request->get('email');
@@ -82,16 +82,16 @@ class UserController extends Controller
             return response()->json(["token" => $user->createToken($request->get('device_name'))->plainTextToken]);
         }
 
-        return response()->json(['Предоставленные учетные данные неверны.']);
+        return response()->json(['The credentials provided are incorrect.']);
     }
 
     public function logout(Request $request)
     {
         if ($request->user()->forceFill(['api_token' => null,])->save()) {
-            return response()->json(['message' => 'Успешно']);
+            return response()->json(['message' => 'Successful']);
         }
 
-        return response()->json(['message' => 'Ошибка']);
+        return response()->json(['message' => 'Error']);
     }
 
 
@@ -105,7 +105,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => 'Ошибка валидации']);
+            return response()->json(['message' => 'Validation error']);
         }
 
         $userId = $request->user()->id;
@@ -127,9 +127,9 @@ class UserController extends Controller
         }
 
         if ($user->save()) {
-            return response()->json(['message' => 'Данные успешно обновлены']);
+            return response()->json(['message' => 'Data updated successfully']);
         }
 
-        return response()->json(['message' => 'Ошибка']);
+        return response()->json(['message' => 'Error']);
     }
 }

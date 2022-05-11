@@ -216,7 +216,7 @@ class OrderController extends Controller
 
         $order = Order::whereId($order_id)->first();
         $order->is_paid = 1;
-        $order->status = "has been paid";
+        $order->status = "Has been paid";
         $order->save();
 
         $orderService = new OrderService();

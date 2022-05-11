@@ -16,13 +16,14 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use App\Models\Product\ProductBrand;
+use App\Nova\Order\OrderProduct;
+use App\Nova\User\User;
 
 class Order extends Resource
 {
     public static string $model = \App\Models\Order\Order::class;
 
-    public static $title = 'id';
-    public static $group = 'Клиенты';
+    public static $group = 'Clients';
     public static string $icon = 'M20 9v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zm0-2V5H4v2h16zM6 9v10h12V9H6zm4 2h4a1 1 0 0 1 0 2h-4a1 1 0 0 1 0-2z';
 
     public static $search = [
@@ -31,12 +32,12 @@ class Order extends Resource
 
     public static function label()
     {
-        return 'Заказы';
+        return 'Orders';
     }
 
     public static function singularLabel()
     {
-        return 'Заказ';
+        return 'Order';
     }
 
     public function fields(Request $request)
@@ -44,41 +45,42 @@ class Order extends Resource
         return [
             ID::make()->sortable(),
 
-            Select::make('Статус', 'status')
+            Select::make('Status', 'status')
                 ->options([
-                    'Новый' => 'Новый',
-                    'В работе' => 'В работе',
-                    'Отменен' => 'Отменен',
+                    'Waiting for confirmation' => 'Waiting for confirmation',
+                    'Has been paid' => 'Has been paid',
+                    'Completed' => 'Completed',
+                    'Canceled' => 'Canceled',
                 ])
                 ->sortable(),
 
-            BelongsTo::make('Пользователь', 'user_id', '\App\Nova\User\User')
+            BelongsTo::make('User', 'user', User::class)
                 ->searchable()
                 ->sortable(),
 
-            Text::make('Сумма заказа', 'total_price'),
-            Boolean::make('Отправлен', 'is_sent'),
-            Boolean::make('Оплачен', 'is_paid'),
+            Text::make('Total price', 'total_price'),
+            Boolean::make('Sent', 'is_sent'),
+            Boolean::make('Paid', 'is_paid'),
 
-            Select::make('Способ оплаты', 'payment_method')
+            Select::make('Payment method', 'payment_method')
                 ->options([
-                    'Оплата по карте' => 'Оплата по карте',
-                    'Оплата наличными' => 'Оплата наличными',
+                    'Card payment' => 'Card payment',
+                    'Cash Payment upon receipt' => 'Cash Payment upon receipt',
                 ])
                 ->nullable(),
 
-            Select::make('Способ доставки', 'delivery_method')
+            Select::make('Delivery method', 'delivery_method')
                 ->options([
-                    'Доставка до дома' => 'Доставка до дома',
-                    'Доставка до пункта выдачи' => 'Доставка до пункта выдачи',
+                    'Delivery to address' => 'Delivery to address',
+                    'Pickup' => 'Pickup',
                 ])
                 ->nullable(),
 
-            Text::make('Адрес', 'address')->nullable(),
-            Text::make('Доп. Информация', 'additional_information')->nullable(),
-            Text::make('Стоимость доставки', 'delivery_price')->default('0'),
+            Text::make('Address', 'address')->nullable(),
+            Text::make('Additional information', 'additional_information')->nullable(),
+            Text::make('Delivery price', 'delivery_price')->default('0'),
 
-            HasMany::make('Содержимое заказа', 'products', '\App\Nova\Order\OrderProduct'),
+            HasMany::make('Order products', 'products', OrderProduct::class),
         ];
     }
 

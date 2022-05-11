@@ -6,21 +6,24 @@ use App\Models\Product\ProductCategory;
 use App\Models\Product\ProductSubcategory;
 use Illuminate\Http\Request;
 use App\Nova\Resource;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
 use App\Models\Product\ProductBrand;
+use App\Nova\Product\ProductImage;
 
 class Product extends Resource
 {
     public static string $model = \App\Models\Product\Product::class;
 
-    public static $title = 'title';
-    public static $group = 'Склад';
+    public static $title = 'name';
+    public static $group = 'Warehouse';
     public static string $icon = 'M20 9v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zm0-2V5H4v2h16zM6 9v10h12V9H6zm4 2h4a1 1 0 0 1 0 2h-4a1 1 0 0 1 0-2z';
 
     public static $search = [
@@ -29,28 +32,43 @@ class Product extends Resource
 
     public static function label()
     {
-        return 'Товары';
+        return 'Products';
     }
 
     public static function singularLabel()
     {
-        return 'Товар';
+        return 'Product';
     }
 
     public function fields(Request $request)
     {
         return [
             ID::make()->sortable(),
-            Text::make('Название', 'name')->sortable(),
-            Text::make('Адрес', 'slug')->sortable()->showOnDetail(),
-            Image::make('Изображение', 'image_url')->nullable(),
-            Text::make('Описание', 'description'),
-            Select::make('Бренд', 'brand_id')->options(ProductBrand::pluck('product_brands.id', 'product_brands.name')),
-            Select::make('Категория', 'category_id')->options(ProductCategory::pluck('product_categories.id', 'product_categories.name')),
-            Select::make('Подкатегория', 'subcategory_id')->options(ProductSubcategory::pluck('product_category_subcategories.id', 'product_category_subcategories.name')),
-            Text::make('Количество', 'amount_left'),
-            Text::make('Цена', 'price'),
-            HasMany::make('Доп. Изображения', 'images', '\App\Nova\Product\ProductImage'),
+            Text::make('Name', 'name')->sortable(),
+            Text::make('Slug', 'slug')->sortable()->showOnDetail(),
+            Textarea::make('Description', 'description'),
+            Image::make('Image', 'image_url')
+                ->path('storage')
+                ->disk('public')
+                ->nullable(),
+            Text::make('In stock', 'amount_left'),
+            Text::make('Price', 'price'),
+            HasMany::make('Additional images', 'images', ProductImage::class),
+
+            BelongsTo::make('Brand', 'brand', \App\Nova\Product\ProductBrand::class)
+                ->searchable()
+                ->sortable()
+                ->onlyOnIndex(),
+
+            BelongsTo::make('Category', 'category', \App\Nova\Product\ProductCategory::class)
+                ->searchable()
+                ->sortable()
+                ->onlyOnIndex(),
+
+            BelongsTo::make('Subcategory', 'subcategory', \App\Nova\Product\ProductSubcategory::class)
+                ->searchable()
+                ->sortable()
+                ->onlyOnIndex(),
         ];
     }
 

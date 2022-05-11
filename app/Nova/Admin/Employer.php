@@ -15,7 +15,7 @@ use Laravel\Nova\Fields\BelongsToMany;
 class Employer extends Resource
 {
     public static string $model = \App\Models\Admin\Employer::class;
-    public static $group = 'Компания';
+    public static $group = 'Company';
     public static $title = 'email';
     public static string $icon = 'M19 10h2a1 1 0 0 1 0 2h-2v2a1 1 0 0 1-2 0v-2h-2a1 1 0 0 1 0-2h2V8a1 1 0 0 1 2 0v2zM9 12A5 5 0 1 1 9 2a5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm8 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h5a5 5 0 0 1 5 5v2z';
 
@@ -27,12 +27,12 @@ class Employer extends Resource
 
     public static function label()
     {
-        return 'Работники';
+        return 'Employers';
     }
 
     public static function singularLabel()
     {
-        return 'Работник';
+        return 'Employer';
     }
 
     public function fields(Request $request)
@@ -40,7 +40,7 @@ class Employer extends Resource
         return [
             ID::make()->sortable(),
 
-            Avatar::make('Аватарка', 'avatar')
+            Avatar::make('Avatar', 'avatar')
                 ->path('avatars')
                 ->preview(function ($value, $disk) {
                     return $value ? Storage::disk($disk)->url($value) : '/images/avatar.png';
@@ -48,31 +48,29 @@ class Employer extends Resource
                 ->hideWhenCreating()
                 ->nullable(),
 
-            Text::make('Имя', 'name')
+            Text::make('Name', 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            BelongsToMany::make('Роли', 'roles', '\App\Nova\Admin\Role'),
-
-            Text::make('Почтовый ящик', 'email')
+            Text::make('Email', 'email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:admin_employers,email')
                 ->updateRules('unique:admin_employers,email,{{resourceId}}'),
 
-            Text::make('ID в Telegram', 'telegram_id')
+            Text::make('Telegram ID', 'telegram_id')
                 ->sortable()
                 ->rules('nullable', 'max:255'),
 
-            Boolean::make('Получать уведомления', 'is_telegram_enabled')
+            Boolean::make('Enable notifications', 'is_telegram_enabled')
                 ->rules('required', 'boolean'),
 
-            Password::make('Пароль', 'password')
+            Password::make('Password', 'password')
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            Text::make('Номер телефона', 'phone_number')->nullable(),
+            Text::make('Phone', 'phone_number')->nullable(),
         ];
     }
 
