@@ -13,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
 class Invoice extends Mailable
 {
     use Queueable, SerializesModels;
+
     /**
      * The order instance.
      *
@@ -44,12 +45,15 @@ class Invoice extends Mailable
      */
     public function build()
     {
-        return $this->view('email.invoice')->with([
-            'userName' => $this->order->user->name,
-            'orderId' => $this->order->id,
-            'totalPrice' => $this->order->total_price,
-            'address' => $this->order->address,
-            'additionalInformation' => $this->order->additional_information,
-        ])->attachData($this->pdf, 'smart-store-order-no-' . $this->order->id . '.pdf');
+        return $this->view('email.invoice')
+            ->subject('Order number: ' . $this->order->id)
+            ->with([
+                'userName' => $this->order->user->name,
+                'orderId' => $this->order->id,
+                'totalPrice' => $this->order->total_price,
+                'address' => $this->order->address,
+                'additionalInformation' => $this->order->additional_information,
+            ])
+            ->attachData($this->pdf, 'smart-store-order-no-' . $this->order->id . '.pdf');
     }
 }

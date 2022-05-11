@@ -1,11 +1,10 @@
 {{--@component('email::message')--}}
-    <h2>Hello {{$userName}},</h2><br>
-    <p>Thank you for your purchase!</p><br>
-    <p>Order information!</p><br>
-
-        Order number: {{$orderId}}<br>
-        Total price: {{$totalPrice}}<br>
-        Delivery address: {{$address}}<br>
-        Additional information: {{$additionalInformation}}<br>
-    Your Smart Store Inc.<br>
+Hello {{$userName}},<br>
+<h2>Thank you for your purchase!</h2><br>
+<b>Order information:</b><br>
+Order number: {{$orderId}}<br>
+Total price: {{$totalPrice}}<br>
+Delivery address: {{$address}}<br>
+Additional information: {{$additionalInformation}}<br><br>
+<b>Your Smart Store Inc.</b><br>
 {{--@endcomponent--}}
