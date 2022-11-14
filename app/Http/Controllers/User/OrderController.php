@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Mail\Invoice;
 use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
-use App\Models\Product\Product;
 use App\Models\User\Cart;
 use App\Models\User\CartProduct;
 use App\Service\OrderService;
@@ -44,7 +43,7 @@ class OrderController extends Controller
     public function getOrder(Request $request): JsonResponse
     {
         $user = Auth::user();
-        $orderId = $request->input("order_id");
+        $orderId = $request->input('order_id');
 
         $order = Order::whereId($orderId)->first();
         $order->user_id = $order->user;
@@ -139,11 +138,7 @@ class OrderController extends Controller
         return response()->json()->isServerError();
     }
 
-//    public function updateOrder(Request $request){
-//
-//    }
-
-    public function deleteOrder(Request $request)
+    public function deleteOrder(Request $request): JsonResponse|bool
     {
         $user = Auth::user();
         $orderId = $request->get("order_id");
@@ -160,7 +155,7 @@ class OrderController extends Controller
     /**
      * @throws ApiErrorException
      */
-    public function createPaymentIntent($order_id)
+    public function createPaymentIntent($order_id): JsonResponse
     {
         $user = Auth::user();
         $order = Order::whereId($order_id)->first();
@@ -192,7 +187,7 @@ class OrderController extends Controller
         return response()->json($output);
     }
 
-    public function sendInvoice(Request $request)
+    public function sendInvoice(Request $request): JsonResponse
     {
         $user = Auth::user();
         $order_id = $request->get("order_id");
