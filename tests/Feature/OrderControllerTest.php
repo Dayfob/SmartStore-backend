@@ -1,7 +1,10 @@
 <?php
 
 namespace Tests\Feature;
-
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
 use App\Models\Product\Product;
@@ -10,10 +13,6 @@ use App\Models\User\CartProduct;
 use App\Models\User\User;
 use App\Models\User\Wishlist;
 use App\Models\User\WishlistProduct;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 class OrderControllerTest extends TestCase
 {
