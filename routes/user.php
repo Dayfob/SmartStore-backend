@@ -6,7 +6,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\WishlistController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'user'], function () {
+Route::group(['prefix' => 'user'], static function () {
     Route::post('login', [UserController::class, 'login']);
     Route::post('register',[UserController::class, 'register']);
 
@@ -15,20 +15,20 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('logout', [UserController::class, 'logout']);
         Route::post('update', [UserController::class, 'updateUserData']);
 
-        Route::group(['prefix' => 'cart'], function () {
+        Route::group(['prefix' => 'cart'], static function () {
             Route::get('my_cart', [CartController::class, 'getCart']);
             Route::post('add_product', [CartController::class, 'addProduct']);
             Route::post('update_product', [CartController::class, 'updateProduct']);
             Route::post('delete_product', [CartController::class, 'deleteProduct']);
         });
 
-        Route::group(['prefix' => 'wishlist'], function () {
+        Route::group(['prefix' => 'wishlist'], static function () {
             Route::get('my_wishlist', [WishlistController::class, 'getWishlist']);
             Route::post('add_product', [WishlistController::class, 'addProduct']);
             Route::post('delete_product', [WishlistController::class, 'deleteProduct']);
         });
 
-        Route::group(['prefix' => 'order'], function () {
+        Route::group(['prefix' => 'order'], static function () {
             Route::get('all', [OrderController::class, 'getAllOrders']);
             Route::get('my_order', [OrderController::class, 'getOrder']);
             Route::post('create_order', [OrderController::class, 'createOrder']);
