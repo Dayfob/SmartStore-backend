@@ -27,7 +27,8 @@ class CartServiceTest extends TestCase
         $cartItemAmount = 1;
         $itemAmount = 2;
 
-        $cartCost = $this->service->calculateCartCost($cartTotalPrice, $cartProductId, $cartItemAmount, $itemAmount);
-        $this->assertEquals($product->price * 2, $cartCost);
+        $cartCost = $this->service->
+            calculateCartCost($cartTotalPrice, $cartProductId, $cartItemAmount, $itemAmount);
+        $this->assertEquals($product->price * $itemAmount, $cartCost);
     }
 }
