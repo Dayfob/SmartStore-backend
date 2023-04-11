@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\User\Cart;
 use App\Models\User\User;
 use App\Models\User\Wishlist;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function getUser(Request $request)
+    public function getUser(Request $request): array
     {
         $userId = $request->user()->id;
 
@@ -21,7 +22,7 @@ class UserController extends Controller
             ->toArray();
     }
 
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -61,7 +62,7 @@ class UserController extends Controller
         return response()->json(['message' => 'Error']);
     }
 
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -78,14 +79,14 @@ class UserController extends Controller
 
         $user = User::whereEmail($userEmail)->first();
 
-        if (Hash::check($password, $user->getAttribute('password'))){
+        if (Hash::check($password, $user->getAttribute('password'))) {
             return response()->json(["token" => $user->createToken($request->get('device_name'))->plainTextToken]);
         }
 
         return response()->json(['The credentials provided are incorrect.']);
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         if ($request->user()->forceFill(['api_token' => null,])->save()) {
             return response()->json(['message' => 'Successful']);
@@ -95,7 +96,7 @@ class UserController extends Controller
     }
 
 
-    public function updateUserData(Request $request) // надо проверить работоспособность
+    public function updateUserData(Request $request): JsonResponse // надо проверить работоспособность
     {
         $validator = Validator::make($request->all(), [
             'name' => 'string',
@@ -113,16 +114,16 @@ class UserController extends Controller
         $user = User::whereId($userId)
             ->get()->first();
 
-        if ($request->exists("name")){
+        if ($request->exists("name")) {
             $user->name = $request->get("name");
         }
-        if ($request->exists("email")){
+        if ($request->exists("email")) {
             $user->email = $request->get("email");
         }
-        if ($request->exists("phone")){
+        if ($request->exists("phone")) {
             $user->phone_number = $request->get("phone");
         }
-        if ($request->exists("iin")){
+        if ($request->exists("iin")) {
             $user->iin = $request->get("iin");
         }
 

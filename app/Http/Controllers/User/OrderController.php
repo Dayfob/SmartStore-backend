@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Mail\Invoice;
 use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
-use App\Models\Product\Product;
 use App\Models\User\Cart;
 use App\Models\User\CartProduct;
 use App\Service\OrderService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -23,23 +23,15 @@ Stripe::setApiKey('sk_test_51KvcFqIwdOpAH80orZnTKwfhrww10bFcNdvW5QXe50PzHpBf7odk
 
 class OrderController extends Controller
 {
-    public function getAllOrders()
+    public function getAllOrders(): JsonResponse
     {
         $user = Auth::user();
-
         $orders = Order::whereUserId($user->id)->orderBy('created_at', 'DESC')->get();
+        $data = [];
 
         foreach ($orders as $order) {
             $order->user_id = $order->user;
-            $orderProducts = OrderProduct::whereOrderId($order->id)->get();
-            foreach ($orderProducts as $orderProduct) {
-                $product = Product::whereId($orderProduct->item_id)->first();
-                $product->brand_id = $product->brand;
-                $product->category_id = $product->category;
-                $product->subcategory_id = $product->subcategory;
-                $product->image_url = asset('storage/' . $product->image_url);
-                $orderProduct->item_id = $product;
-            }
+            $orderProducts = (new OrderService())->getOrderProducts($order->id);
             $data[] = [
                 "order" => $order,
                 "orderProducts" => $orderProducts];
@@ -48,28 +40,19 @@ class OrderController extends Controller
         return response()->json($data);
     }
 
-    public function getOrder(Request $request)
+    public function getOrder(Request $request): JsonResponse
     {
         $user = Auth::user();
-        $orderId = $request->input("order_id");
+        $orderId = $request->input('order_id');
 
         $order = Order::whereId($orderId)->first();
         $order->user_id = $order->user;
-
-        $orderProducts = OrderProduct::whereOrderId($order->id)->get();
-
-        foreach ($orderProducts as $orderProduct) {
-            $product = Product::whereId($orderProduct->item_id)->first();
-            $product->brand_id = $product->brand;
-            $product->category_id = $product->category;
-            $product->subcategory_id = $product->subcategory;
-            $product->image_url = asset('storage/' . $product->image_url);
-            $orderProduct->item_id = $product;
-        }
+        $orderProducts = (new OrderService())->getOrderProducts($order->id);
 
         $data = [
             "order" => $order,
-            "orderProducts" => $orderProducts];
+            "orderProducts" => $orderProducts
+        ];
 
         return response()->json($data);
     }
@@ -77,7 +60,7 @@ class OrderController extends Controller
     /**
      * @throws ApiErrorException
      */
-    public function createOrder(Request $request)
+    public function createOrder(Request $request): JsonResponse|bool
     {
         $user = Auth::user();
         $stripeCustomer = $user->createOrGetStripeCustomer();
@@ -115,8 +98,7 @@ class OrderController extends Controller
                 $orderProduct->save();
             }
 
-
-            if ($payment_method === "Card payment"){
+            if ($payment_method === "Card payment") {
                 $ephemeralKey = EphemeralKey::create(
                     [
                         'customer' => $user->stripe_id,
@@ -125,16 +107,16 @@ class OrderController extends Controller
                         'stripe_version' => '2020-08-27',
                     ]);
 
-            // Create a PaymentIntent with amount and currency
-            $paymentIntent = PaymentIntent::create([
-                'amount' => $order->total_price * 100,
-                'currency' => 'kzt',
-                'customer' => $user->stripe_id,
-                'receipt_email' => $user->email,
-                'automatic_payment_methods' => [
-                    'enabled' => 'true',
-                ],
-            ]);
+                // Create a PaymentIntent with amount and currency
+                $paymentIntent = PaymentIntent::create([
+                    'amount' => $order->total_price * 100,
+                    'currency' => 'kzt',
+                    'customer' => $user->stripe_id,
+                    'receipt_email' => $user->email,
+                    'automatic_payment_methods' => [
+                        'enabled' => 'true',
+                    ],
+                ]);
 
                 $data = [
                     'client_id' => $user->stripe_id,
@@ -156,11 +138,7 @@ class OrderController extends Controller
         return response()->json()->isServerError();
     }
 
-//    public function updateOrder(Request $request){
-//
-//    }
-
-    public function deleteOrder(Request $request)
+    public function deleteOrder(Request $request): JsonResponse|bool
     {
         $user = Auth::user();
         $orderId = $request->get("order_id");
@@ -177,7 +155,7 @@ class OrderController extends Controller
     /**
      * @throws ApiErrorException
      */
-    public function createPaymentIntent($order_id)
+    public function createPaymentIntent($order_id): JsonResponse
     {
         $user = Auth::user();
         $order = Order::whereId($order_id)->first();
@@ -209,7 +187,7 @@ class OrderController extends Controller
         return response()->json($output);
     }
 
-    public function sendInvoice(Request $request)
+    public function sendInvoice(Request $request): JsonResponse
     {
         $user = Auth::user();
         $order_id = $request->get("order_id");
