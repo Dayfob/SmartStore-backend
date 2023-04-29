@@ -53,10 +53,10 @@ return [
             'transport' => 'mailgun',
         ],
 
-//        'postmark' => [
-//            'transport' => 'postmark',
-//            'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
-//        ],
+        'postmark' => [
+            'transport' => 'postmark',
+            'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
+        ],
 
         'sendmail' => [
             'transport' => 'sendmail',
@@ -75,7 +75,7 @@ return [
         'failover' => [
             'transport' => 'failover',
             'mailers' => [
-//                'postmark',
+                'postmark',
                 'mailgun',
                 'sendmail',
                 'smtp',

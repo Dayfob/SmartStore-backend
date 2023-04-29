@@ -46,19 +46,23 @@ class CartController extends Controller
         $item_id = $request->get("item_id");
         $item_amount = $request->get("item_amount");
 
-        if (CartProduct::where("cart_id", $cart->id)->where("item_id", $item_id)->first()) {
-            $cartProduct = CartProduct::where("cart_id", $cart->id)->where("item_id", $item_id)->first();
+        $cartProduct = CartProduct::where("cart_id", $cart->id)->where("item_id", $item_id)->first();
+
+        if ($cartProduct) {
+            $cartProductItemAmount = $cartProduct->item_amount;
             $cartProduct->item_amount += $item_amount;
+            $item_amount = $cartProduct->item_amount;
         } else {
             $cartProduct = new CartProduct();
             $cartProduct->cart_id = $cart->id;
             $cartProduct->item_id = $item_id;
             $cartProduct->item_amount = $item_amount;
+            $cartProductItemAmount = 0;
         }
         $cartProduct->save();
 
         $cart->total_price = (new CartService())
-            ->calculateCartCost($cart->total_price, $cartProduct->item_id, $cartProduct->item_amount, $item_amount);
+            ->calculateCartCost($cart->total_price, $cartProduct->item_id, $cartProductItemAmount, $item_amount);
 
         if ($cart->save()) {
             return response()->json($cartProduct);
